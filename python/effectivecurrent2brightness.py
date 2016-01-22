@@ -85,13 +85,13 @@ class TemporalModel(object):
     def charge_accumulation(self, fast_response, stim):
         t = np.arange(0, 8 * self.tau2, self.Fs)
 
-        # calculated accumulated charge        
+        # calculated accumulated charge
         rect_stim = np.where(stim> 0, stim, 0)  # rectify
         ca = self.Fs * np.cumsum(rect_stim.astype(float))
         chargeaccumulated = (self.e * self.Fs *
                              np.convolve(gamma(1, self.tau2, t), ca))
-      
-          
+
+
         fast_response = np.concatenate([fast_response, np.zeros(len(chargeaccumulated) -
                             fast_response.shape[0])])
 
@@ -99,7 +99,7 @@ class TemporalModel(object):
         ind = R2 < 0
         R2 = np.where(R2 > 0, R2, 0)  # rectify again
         return R2
-        
+
     def stationary_nonlinearity(self, fast_response_ca):
         # now we put in the stationary nonlinearity of Devyani's:
         R2norm = fast_response_ca / fast_response_ca.max()  # normalize
@@ -108,14 +108,19 @@ class TemporalModel(object):
         R3 = R2norm * scale_factor  # scaling factor varies with original
         return R3
 
-    def slow_response(self, fast_response_ca_snl):
+    def slow_response(self, fast_response_ca_snl, convolution=None):
         # this is cropped as tightly as
         # possible for speed sake
         t = np.arange(0, self.tau3 * 8, self.Fs)
         G3 = gamma(3, self.tau3, t)
- 
-       # conv = np.convolve(G3, fast_response_ca_snl)
-        conv = fftconvolve(G3, fast_response_ca_snl)
+
+        if convolution=='numpy':
+            conv = np.convolve(G3, fast_response_ca_snl)
+        elif convolution=='fftconvolve':
+            conv = fftconvolve(G3, fast_response_ca_snl)
+        elif convolution=='sparseconv':
+            conv = utils.sparseconv(G3, fast_response_ca_snl)
+
         R4 = self.Fs * conv
 
         return R4
