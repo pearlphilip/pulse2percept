@@ -9,18 +9,18 @@ from scipy import interpolate
 from utils import TimeSeries
 import matplotlib.pyplot as plt
 
-# import imp 
+# import imp
 # imp.reload(effectivecurrent2brightness.py)
 
 
-# create  retina, 
-#should be the size of the electrode array plus at least half 
+# create  retina,
+#should be the size of the electrode array plus at least half
 # the electrode spacing
 
-r = e2cm.Retina(axon_map='../retina_1700by2800.npz', 
+r = e2cm.Retina(axon_map='../retina_1700by2800.npz',
                 sampling=25, ylo=-1700, yhi=1700, xlo=-2800, xhi=2800)
-   
-# Create electrode array 
+
+# Create electrode array
 # 293 μm equals 1 degree
 # electrode spacing is done in microns
 
@@ -28,12 +28,12 @@ xlist=[]
 ylist=[]
 rlist=[]
 e_spacing=525
- 
-for x in np.arange(-2362, 2364, e_spacing):  
+
+for x in np.arange(-2362, 2364, e_spacing):
     for y in np.arange(-1312, 1314, e_spacing):
         xlist.append(x)
         ylist.append(y)
-        rlist.append(100)        
+        rlist.append(100)
 
 e_all = e2cm.ElectrodeArray(rlist,xlist,ylist)
 
@@ -54,13 +54,13 @@ res=[e_rf[0].shape[0],e_rf[1].shape[1]] # resolution of screen
 
 fps=30
 bar_width=6.7
-[X,Y]=np.meshgrid(np.linspace(-degscreen[1]/2, degscreen[1]/2, res[1]), 
+[X,Y]=np.meshgrid(np.linspace(-degscreen[1]/2, degscreen[1]/2, res[1]),
 np.linspace(-degscreen[0]/2, degscreen[0]/2, res[0]));
 
 for o in np.arange(0, 2*np.pi, 2*np.pi/4): # each orientation
     M=np.cos(o)*X +np.sin(o)*Y
 
- #   for sp in range (32:32): # DEBUG each speed, eventually 8:32  
+ #   for sp in range (32:32): # DEBUG each speed, eventually 8:32
     sp=8
     movie=np.zeros((res[0],res[1], int(np.ceil((70/5)*30))))
     st=np.min(M)
@@ -68,44 +68,43 @@ for o in np.arange(0, 2*np.pi, 2*np.pi/4): # each orientation
     while (st<np.max(M)):
         img=np.zeros(M.shape)
         ind=np.where((M>st) & (M<st+bar_width))
-        img[ind]=1    
+        img[ind]=1
         movie[:,:, fm_ct]=img
         fm_ct=fm_ct+1
-        st=st+(sp/fps)   
-         
-    movie=movie[:,:, 0:fm_ct-1]   
+        st=st+(sp/fps)
+
+    movie=movie[:,:, 0:fm_ct-1]
     moviedur=movie.shape[2]/fps
-    
+
     pt=[]
     for rf in e_rf:
-        rflum= e2cm.retinalmovie2electrodtimeseries(rf, movie) 
+        rflum= e2cm.retinalmovie2electrodetimeseries(rf, movie) 
         #plt.plot(rflum)
         ptrain=e2cm.Movie2Pulsetrain(rflum)
         #plt.plot(ptrain.data)
-        pt.append(ptrain) 
+        pt.append(ptrain)
      #   plt.plot(pt[ct].data)
-          
-    [ecs_list, cs_list]  = r.electrode_ecs(e_all)    
+
+    [ecs_list, cs_list]  = r.electrode_ecs(e_all)
     tm1 = ec2b.TemporalModel()
     #fr=np.zeros([e_rf[0].shape[0],e_rf[0].shape[1], len(pt[0].data)])
 
     for xx in range(r.gridx.shape[1]):
         for yy in range(r.gridx.shape[0]):
             ecm = r.ecm(xx, yy, ecs_list, pt)
-            fr = tm1.fast_response(ecm, dojit=False)    
+            fr = tm1.fast_response(ecm, dojit=False)
             ca = tm1.charge_accumulation(fr, ecm)
             sn = tm1.stationary_nonlinearity(ca)
             sr = tm1.slow_response(sn)
 #            sr.data=sr.data[0:int(np.round((moviedur+1)/sr.tsample))]
             intfunc= interpolate.interp1d(np.linspace(0, len(sr.data),len(sr.data)),
                                       sr.data)
-            
+
             if xx==0 and yy==0:
               sr_rs=intfunc(np.linspace(0, len(sr.data), len(sr.data)*sr.tsample*fps))
-              brightnessmovie = np.zeros(r.gridx.shape + (len(sr_rs),))  
-            
+              brightnessmovie = np.zeros(r.gridx.shape + (len(sr_rs),))
+
             brightnessmovie[yy, xx, :] = sr_rs
     filename='movie20160222_' + str(np.round(o,3)) +'.npy'
-    
-    np.save(filename, brightnessmovie)      
-    
+
+    np.save(filename, brightnessmovie)

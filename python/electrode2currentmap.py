@@ -110,7 +110,7 @@ def receptive_field(electrode, xg, yg, size):
         rf[ind] = 1
         return rf
 
-def retinalmovie2electrodtimeseries(rf, movie, fps=30):
+def retinalmovie2electrodetimeseries(rf, movie, fps=30):
         """
 
         """
@@ -142,7 +142,7 @@ class Movie2Pulsetrain(TimeSeries):
     Is used to create pulse-train stimulus based on luminance over time from
     a movie
     """
-    def __init__(self, rflum, fps=30.0, amplitude_transform='linear',
+    def __init__(self, rflum, fps=30.0, amplitude_transform=None,
                  amp_max=90, freq=20, pulse_dur=.075/1000.,
                  interphase_dur=.075/1000., tsample=.005/1000.,
                  pulsetype='cathodicfirst', stimtype='pulsetrain'):

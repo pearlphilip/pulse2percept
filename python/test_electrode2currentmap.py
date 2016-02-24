@@ -40,7 +40,7 @@ def test_Movie2Pulsetrain():
     rflum[50] = 1
     m2pt = e2cm.Movie2Pulsetrain(rflum,
                                  fps=fps,
-                                 amplitude_transform=amplitude_transform,
+                                 amplitude_transform=None,
                                  amp_max=amp_max,
                                  freq=freq,
                                  pulse_dur=pulse_dur,
