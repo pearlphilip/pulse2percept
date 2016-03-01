@@ -90,7 +90,6 @@ def test_Retina_ecm():
                                 tsample=.075/1000., current_amplitude=20,
                                 pulsetype='cathodicfirst')
 
-
     electrode_array = e2cm.ElectrodeArray([1, 1], [0, 1], [0, 1])
     ecs_list, cs_list = retina.electrode_ecs(electrode_array)
     xx = yy = 0
