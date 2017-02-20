@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>oyster &mdash; pulse2percept 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pulse2percept 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Reference" href="index.html"/>
+        <link rel="prev" title="files" href="pulse2percept.files.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pulse2percept
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.html"><code class="docutils literal"><span class="pre">pulse2percept</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.effectivecurrent2brightness.html"><code class="docutils literal"><span class="pre">effectivecurrent2brightness</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.electrode2currentmap.html"><code class="docutils literal"><span class="pre">electrode2currentmap</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.files.html"><code class="docutils literal"><span class="pre">files</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">oyster</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#jansonius">jansonius</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#make-axon-map">make_axon_map</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pulse2percept</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">oyster</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/pulse2percept.oyster.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pulse2percept.oyster">
+<span id="oyster"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">oyster</span></code><a class="headerlink" href="#module-pulse2percept.oyster" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.oyster.jansonius" title="pulse2percept.oyster.jansonius"><code class="xref py py-obj docutils literal"><span class="pre">jansonius</span></code></a>([nCells,&nbsp;nR,&nbsp;center,&nbsp;rot,&nbsp;scale,&nbsp;...])</td>
+<td>Implements the model of retinal axonal pathways by generating a matrix of (x,y) positions.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.oyster.make_axon_map" title="pulse2percept.oyster.make_axon_map"><code class="xref py py-obj docutils literal"><span class="pre">make_axon_map</span></code></a>(xg,&nbsp;yg,&nbsp;jan_x,&nbsp;jan_y[,&nbsp;...])</td>
+<td>Retinal axon map</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="jansonius">
+<h2>jansonius<a class="headerlink" href="#jansonius" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.oyster.jansonius">
+<code class="descclassname">pulse2percept.oyster.</code><code class="descname">jansonius</code><span class="sig-paren">(</span><em>nCells=500</em>, <em>nR=801</em>, <em>center=array([15</em>, <em>2])</em>, <em>rot=0.0</em>, <em>scale=1</em>, <em>bs=-1.9</em>, <em>bi=0.5</em>, <em>r0=4</em>, <em>maxR=45</em>, <em>angRange=60</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/oyster.html#jansonius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.oyster.jansonius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the model of retinal axonal pathways by generating a
+matrix of (x,y) positions.</p>
+<p>Assumes that the fovea is at [0, 0]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>nCells</strong> : int</p>
+<blockquote>
+<div><p>Number of axons (cells).</p>
+</div></blockquote>
+<p><strong>nR</strong> : int</p>
+<blockquote>
+<div><p>Number of samples per axon (spatial resolution).</p>
+</div></blockquote>
+<p><strong>Center: 2 item array</strong></p>
+<blockquote>
+<div><p>The location of the optic disk in dva.</p>
+</div></blockquote>
+<p><strong>See:</strong></p>
+<p><strong>Jansonius et al., 2009, A mathematical description of nerve fiber bundle</strong></p>
+<p class="last"><strong>trajectories and their variability in the human retina, Vision Research</strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="make-axon-map">
+<h2>make_axon_map<a class="headerlink" href="#make-axon-map" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.oyster.make_axon_map">
+<code class="descclassname">pulse2percept.oyster.</code><code class="descname">make_axon_map</code><span class="sig-paren">(</span><em>xg</em>, <em>yg</em>, <em>jan_x</em>, <em>jan_y</em>, <em>axon_lambda=1</em>, <em>min_weight=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/oyster.html#make_axon_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.oyster.make_axon_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retinal axon map</p>
+<p>Generates a mapping of how each pixel in the retina space is affected
+by stimulation of underlying ganglion cell axons.
+Parameters
+&#8212;&#8212;&#8212;-
+xg, yg : array</p>
+<blockquote>
+<div>meshgrid of pixel locations in units of visual angle sp</div></blockquote>
+<dl class="docutils">
+<dt>axon_lambda</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>space constant for how effective stimulation (or &#8216;weight&#8217;) falls off
+with distance from the pixel back along the axon toward the optic disc
+(default 1 degree)</dd>
+<dt>min_weight</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>minimum weight falloff.  default .001</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>axon_id</strong> : list</p>
+<blockquote>
+<div><p>a list, for every pixel, of the index into the pixel in xg,yg space,
+along the underlying axonal pathway.</p>
+</div></blockquote>
+<p><strong>axon_weight</strong> : list</p>
+<blockquote class="last">
+<div><p>a list, for every pixel, of the axon weight into the pixel in xg,yg
+space</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="pulse2percept.files.html" class="btn btn-neutral" title="files" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Michael Beyeler, Ariel Rokem, Geoff Boynton, and Ione Fine, The University of Washington.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>effectivecurrent2brightness &mdash; pulse2percept 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pulse2percept 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Reference" href="index.html"/>
+        <link rel="prev" title="pulse2percept" href="pulse2percept.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pulse2percept
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.html"><code class="docutils literal"><span class="pre">pulse2percept</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">effectivecurrent2brightness</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#temporalmodel"><code class="docutils literal"><span class="pre">TemporalModel</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-brightest-frame">get_brightest_frame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parse-pulse-trains">parse_pulse_trains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pulse2percept">pulse2percept</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.electrode2currentmap.html"><code class="docutils literal"><span class="pre">electrode2currentmap</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.files.html"><code class="docutils literal"><span class="pre">files</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.oyster.html"><code class="docutils literal"><span class="pre">oyster</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pulse2percept</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">effectivecurrent2brightness</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/pulse2percept.effectivecurrent2brightness.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pulse2percept.effectivecurrent2brightness">
+<span id="effectivecurrent2brightness"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">effectivecurrent2brightness</span></code><a class="headerlink" href="#module-pulse2percept.effectivecurrent2brightness" title="Permalink to this headline">¶</a></h1>
+<p>effectivecurrent2brightness
+This transforms the effective current into brightness for a single point in
+space based on the Horsager model as modified by Devyani
+Inputs: a vector of effective current over time
+Output: a vector of brightness over time</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel" title="pulse2percept.effectivecurrent2brightness.TemporalModel"><code class="xref py py-obj docutils literal"><span class="pre">TemporalModel</span></code></a>([tsample,&nbsp;tau_nfl,&nbsp;tau_inl,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.get_brightest_frame" title="pulse2percept.effectivecurrent2brightness.get_brightest_frame"><code class="xref py py-obj docutils literal"><span class="pre">get_brightest_frame</span></code></a>(resp)</td>
+<td>Return brightest frame of a brightness movie</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.parse_pulse_trains" title="pulse2percept.effectivecurrent2brightness.parse_pulse_trains"><code class="xref py py-obj docutils literal"><span class="pre">parse_pulse_trains</span></code></a>(stim,&nbsp;implant)</td>
+<td>Parse input stimulus and convert to list of pulse trains</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.pulse2percept" title="pulse2percept.effectivecurrent2brightness.pulse2percept"><code class="xref py py-obj docutils literal"><span class="pre">pulse2percept</span></code></a>(stim,&nbsp;implant[,&nbsp;tm,&nbsp;retina,&nbsp;...])</td>
+<td>Transforms an input stimulus to a percept</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="temporalmodel">
+<h2><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel" title="pulse2percept.effectivecurrent2brightness.TemporalModel"><code class="xref py py-class docutils literal"><span class="pre">TemporalModel</span></code></a><a class="headerlink" href="#temporalmodel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel">
+<em class="property">class </em><code class="descclassname">pulse2percept.effectivecurrent2brightness.</code><code class="descname">TemporalModel</code><span class="sig-paren">(</span><em>tsample=5e-06</em>, <em>tau_nfl=0.00041999999999999996</em>, <em>tau_inl=0.018</em>, <em>tau_ca=0.04525</em>, <em>scale_ca=42.1</em>, <em>tau_slow=0.02625</em>, <em>scale_slow=1150.0</em>, <em>lweight=0.636</em>, <em>aweight=0.5</em>, <em>slope=3.0</em>, <em>shift=15.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_electrode" title="pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_electrode"><code class="xref py py-obj docutils literal"><span class="pre">calc_per_electrode</span></code></a>(pt)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_pixel" title="pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_pixel"><code class="xref py py-obj docutils literal"><span class="pre">calc_per_pixel</span></code></a>(ecs_item,&nbsp;pt,&nbsp;resample,&nbsp;dolayers)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.fast_response" title="pulse2percept.effectivecurrent2brightness.TemporalModel.fast_response"><code class="xref py py-obj docutils literal"><span class="pre">fast_response</span></code></a>(stim,&nbsp;gamma[,&nbsp;dojit,&nbsp;usefft])</td>
+<td>Fast response function (Box 2) for the bipolar layer</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.model_cascade" title="pulse2percept.effectivecurrent2brightness.TemporalModel.model_cascade"><code class="xref py py-obj docutils literal"><span class="pre">model_cascade</span></code></a>(ecm,&nbsp;dolayers,&nbsp;dojit)</td>
+<td>Model cascade according to Nanduri et al.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.slow_response" title="pulse2percept.effectivecurrent2brightness.TemporalModel.slow_response"><code class="xref py py-obj docutils literal"><span class="pre">slow_response</span></code></a>(stim)</td>
+<td>Slow response function (Box 5)</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.stationary_nonlinearity" title="pulse2percept.effectivecurrent2brightness.TemporalModel.stationary_nonlinearity"><code class="xref py py-obj docutils literal"><span class="pre">stationary_nonlinearity</span></code></a>(stim)</td>
+<td>Stationary nonlinearity (Box 4)</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>tsample=5e-06</em>, <em>tau_nfl=0.00041999999999999996</em>, <em>tau_inl=0.018</em>, <em>tau_ca=0.04525</em>, <em>scale_ca=42.1</em>, <em>tau_slow=0.02625</em>, <em>scale_slow=1150.0</em>, <em>lweight=0.636</em>, <em>aweight=0.5</em>, <em>slope=3.0</em>, <em>shift=15.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temporal Sensitivity Model</p>
+<p>A model of temporal integration from retina pixels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>tsample</strong> : float</p>
+<blockquote>
+<div><p>Sampling time step (seconds). Default: 5e-6 s.</p>
+</div></blockquote>
+<p><strong>tau_nfl</strong> : float</p>
+<blockquote>
+<div><p>Time decay constant for the fast leaky integrater of the nerve
+fiber layer (NFL); i.e., ganglion cell layer.
+This is only important in combination with epiretinal electrode
+arrays. Default: 45.25 / 1000 s.</p>
+</div></blockquote>
+<p><strong>tau_inl</strong> : float</p>
+<blockquote>
+<div><p>Time decay constant for the fast leaky integrater of the inner
+nuclear layer (INL); i.e., bipolar cell layer.
+This is only important in combination with subretinal electrode
+arrays. Default: 18.0 / 1000 s.</p>
+</div></blockquote>
+<p><strong>tau_ca</strong> : float</p>
+<blockquote>
+<div><p>Time decay constant for the charge accumulation, has values
+between 38 - 57 ms. Default: 45.25 / 1000 s.</p>
+</div></blockquote>
+<p><strong>scale_ca</strong> : float, optional</p>
+<blockquote>
+<div><p>Scaling factor applied to charge accumulation (used to be called
+epsilon). Default: 42.1.</p>
+</div></blockquote>
+<p><strong>tau_slow</strong> : float</p>
+<blockquote>
+<div><p>Time decay constant for the slow leaky integrator.
+Default: 26.25 / 1000 s.</p>
+</div></blockquote>
+<p><strong>scale_slow</strong> : float</p>
+<blockquote>
+<div><p>Scaling factor applied to the output of the cascade, to make
+output values interpretable brightness values &gt;= 0.
+Default: 1150.0</p>
+</div></blockquote>
+<p><strong>lweight</strong> : float</p>
+<blockquote>
+<div><p>Relative weight applied to responses from bipolar cells (weight
+of ganglion cells is 1).
+Default: 0.636.</p>
+</div></blockquote>
+<p><strong>aweight</strong> : float</p>
+<blockquote>
+<div><p>Relative weight applied to anodic charges (weight of cathodic
+charges is 1).
+Default: 0.5.</p>
+</div></blockquote>
+<p><strong>slope</strong> : float</p>
+<blockquote>
+<div><p>Slope of the logistic function in the stationary nonlinearity
+stage. Default: 3. In normalized units of perceptual response
+perhaps should be 2.98</p>
+</div></blockquote>
+<p><strong>shift</strong> : float</p>
+<blockquote class="last">
+<div><p>Shift of the logistic function in the stationary nonlinearity
+stage. Default: 16. In normalized units of perceptual response
+perhaps should be 15.9</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_electrode">
+<code class="descname">calc_per_electrode</code><span class="sig-paren">(</span><em>pt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel.calc_per_electrode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_electrode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_pixel">
+<code class="descname">calc_per_pixel</code><span class="sig-paren">(</span><em>ecs_item</em>, <em>pt</em>, <em>resample</em>, <em>dolayers</em>, <em>dojit=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel.calc_per_pixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_pixel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel.fast_response">
+<code class="descname">fast_response</code><span class="sig-paren">(</span><em>stim</em>, <em>gamma</em>, <em>dojit=True</em>, <em>usefft=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel.fast_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.fast_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fast response function (Box 2) for the bipolar layer</p>
+<p>Convolve a stimulus <cite>stim</cite> with a temporal low-pass filter (1-stage
+gamma) with time constant <cite>self.tau_inl</cite> ~ 14ms representing bipolars.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>stim</strong> : array</p>
+<blockquote>
+<div><p>Temporal signal to process, stim(r,t) in Nanduri et al. (2012).</p>
+</div></blockquote>
+<p><strong>dojit</strong> : bool, optional</p>
+<blockquote>
+<div><p>If True (default), use numba just-in-time compilation.</p>
+</div></blockquote>
+<p><strong>usefft</strong> : bool, optional</p>
+<blockquote>
+<div><p>If False (default), use sparseconv, else fftconvolve.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Fast response, b2(r,t) in Nanduri et al. (2012).</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The function utils.sparseconv can be much faster than np.convolve and
+signal.fftconvolve if <cite>stim</cite> is sparse and much longer than the
+convolution kernel.</p>
+<p>The output is not converted to a TimeSeries object for speedup.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel.model_cascade">
+<code class="descname">model_cascade</code><span class="sig-paren">(</span><em>ecm</em>, <em>dolayers</em>, <em>dojit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel.model_cascade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.model_cascade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model cascade according to Nanduri et al. (2012).</p>
+<p>The &#8216;Nanduri&#8217; model calculates the fast response first, followed by the
+current accumulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ecm</strong> : TimeSeries</p>
+<blockquote>
+<div><p>Effective current</p>
+</div></blockquote>
+<p><strong>dolayers</strong> : list</p>
+<blockquote>
+<div><p>List of retinal layers to simulate. Choose from:
+- &#8216;NFL&#8217;: nerve fiber layer
+- &#8216;INL&#8217;: inner nuclear layer</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Brightness response over time. In Nanduri et al. (2012), the</p>
+<p>maximum value of this signal was used to represent the perceptual</p>
+<p class="last">brightness of a particular location in space, B(r).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel.slow_response">
+<code class="descname">slow_response</code><span class="sig-paren">(</span><em>stim</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel.slow_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.slow_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slow response function (Box 5)</p>
+<p>Convolve a stimulus <cite>stim</cite> with a low-pass filter (3-stage gamma)
+with time constant self.tau_slow.
+This is Box 5 in Nanduri et al. (2012).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>stim</strong> : array</p>
+<blockquote>
+<div><p>Temporal signal to process, stim(r,t) in Nanduri et al. (2012)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Slow response, b5(r,t) in Nanduri et al. (2012).</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This is by far the most computationally involved part of the perceptual
+sensitivity model.</p>
+<p>Conversion to TimeSeries is avoided for the sake of speedup.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.effectivecurrent2brightness.TemporalModel.stationary_nonlinearity">
+<code class="descname">stationary_nonlinearity</code><span class="sig-paren">(</span><em>stim</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#TemporalModel.stationary_nonlinearity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.TemporalModel.stationary_nonlinearity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stationary nonlinearity (Box 4)</p>
+<p>Nonlinearly rescale a temporal signal <cite>stim</cite> across space and time,
+based on a sigmoidal function dependent on the maximum value of <cite>stim</cite>.
+This is Box 4 in Nanduri et al. (2012).</p>
+<p>The parameter values of the asymptote, slope, and shift of the logistic
+function are given by self.asymptote, self.slope, and self.shift,
+respectively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>stim</strong> : array</p>
+<blockquote>
+<div><p>Temporal signal to process, stim(r,t) in Nanduri et al. (2012).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Rescaled signal, b4(r,t) in Nanduri et al. (2012).</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Conversion to TimeSeries is avoided for the sake of speedup.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="get-brightest-frame">
+<h2>get_brightest_frame<a class="headerlink" href="#get-brightest-frame" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.effectivecurrent2brightness.get_brightest_frame">
+<code class="descclassname">pulse2percept.effectivecurrent2brightness.</code><code class="descname">get_brightest_frame</code><span class="sig-paren">(</span><em>resp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#get_brightest_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.get_brightest_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return brightest frame of a brightness movie</p>
+<p>This function returns the frame of a brightness movie that contains the
+brightest pixel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>resp</strong> : TimeSeries</p>
+<blockquote class="last">
+<div><p>The brightness movie as a TimeSeries object.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parse-pulse-trains">
+<h2>parse_pulse_trains<a class="headerlink" href="#parse-pulse-trains" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.effectivecurrent2brightness.parse_pulse_trains">
+<code class="descclassname">pulse2percept.effectivecurrent2brightness.</code><code class="descname">parse_pulse_trains</code><span class="sig-paren">(</span><em>stim</em>, <em>implant</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#parse_pulse_trains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.parse_pulse_trains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse input stimulus and convert to list of pulse trains</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>stim</strong> : utils.TimeSeries|list|dict</p>
+<blockquote>
+<div><p>There are several ways to specify an input stimulus:</p>
+<ul class="simple">
+<li>For a single-electrode array, pass a single pulse train; i.e., a
+single utils.TimeSeries object.</li>
+<li>For a multi-electrode array, pass a list of pulse trains, where
+every pulse train is a utils.TimeSeries object; i.e., one pulse
+train per electrode.</li>
+<li>For a multi-electrode array, specify all electrodes that should
+receive non-zero pulse trains by name in a dictionary. The key
+of each element is the electrode name, the value is a pulse train.
+Example: stim = {&#8216;E1&#8217;: pt, &#8216;stim&#8217;: pt}, where &#8216;E1&#8217; and &#8216;stim&#8217; are
+electrode names, and <cite>pt</cite> is a utils.TimeSeries object.</li>
+</ul>
+</div></blockquote>
+<p><strong>implant</strong> : e2cm.ElectrodeArray</p>
+<blockquote>
+<div><p>An ElectrodeArray object that describes the implant.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of pulse trains; one pulse train per electrode.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="pulse2percept">
+<h2>pulse2percept<a class="headerlink" href="#pulse2percept" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.effectivecurrent2brightness.pulse2percept">
+<code class="descclassname">pulse2percept.effectivecurrent2brightness.</code><code class="descname">pulse2percept</code><span class="sig-paren">(</span><em>stim</em>, <em>implant</em>, <em>tm=None</em>, <em>retina=None</em>, <em>rsample=30</em>, <em>tol=0.05</em>, <em>use_ecs=True</em>, <em>engine='joblib'</em>, <em>dojit=True</em>, <em>n_jobs=-1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/effectivecurrent2brightness.html#pulse2percept"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.effectivecurrent2brightness.pulse2percept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms an input stimulus to a percept</p>
+<p>This function passes an input stimulus <cite>stim</cite> to a retinal <cite>implant</cite>,
+which is placed on a simulated <cite>retina</cite>, and produces a predicted percept
+by means of the temporal model <cite>tm</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>stim</strong> : utils.TimeSeries|list|dict</p>
+<blockquote>
+<div><p>There are several ways to specify an input stimulus:</p>
+<ul class="simple">
+<li>For a single-electrode array, pass a single pulse train; i.e., a
+single utils.TimeSeries object.</li>
+<li>For a multi-electrode array, pass a list of pulse trains; i.e., one
+pulse train per electrode.</li>
+<li>For a multi-electrode array, specify all electrodes that should
+receive non-zero pulse trains by name.</li>
+</ul>
+</div></blockquote>
+<p><strong>implant</strong> : e2cm.ElectrodeArray</p>
+<blockquote>
+<div><p>An ElectrodeArray object that describes the implant.</p>
+</div></blockquote>
+<p><strong>tm</strong> : ec2b.TemporalModel, optional</p>
+<blockquote>
+<div><p>A model of temporal sensitivity.</p>
+</div></blockquote>
+<p><strong>retina</strong> : e2cm.Retina, optional</p>
+<blockquote>
+<div><p>A Retina object specyfing the geometry of the retina.</p>
+</div></blockquote>
+<p><strong>rsample</strong> : int, optional</p>
+<blockquote>
+<div><p>Resampling factor. For example, a resampling factor of 3 keeps
+only every third frame.
+Default: 30 frames per second.</p>
+</div></blockquote>
+<p><strong>scale_charge</strong> : float, optional</p>
+<blockquote>
+<div><p>Scaling factor applied to charge accumulation (used to be called
+epsilon). Default: 42.1.</p>
+</div></blockquote>
+<p><strong>tol</strong> : float, optional</p>
+<blockquote>
+<div><p>Ignore pixels whose effective current is smaller than a fraction <cite>tol</cite>
+of the max value.
+Default: 0.05.</p>
+</div></blockquote>
+<p><strong>use_ecs</strong> : bool, optional</p>
+<blockquote>
+<div><p>Flag whether to use effective current spread (True) or regular
+current spread, unaffected by axon pathways (False).
+Default: True.</p>
+</div></blockquote>
+<p><strong>engine</strong> : str, optional</p>
+<blockquote>
+<div><p>Which computational backend to use:
+- &#8216;serial&#8217;: Single-core computation
+- &#8216;joblib&#8217;: Parallelization via joblib (requires <cite>pip install joblib</cite>)
+- &#8216;dask&#8217;: Parallelization via dask (requires <cite>pip install dask</cite>)
+Default: joblib.</p>
+</div></blockquote>
+<p><strong>dojit</strong> : bool, optional</p>
+<blockquote>
+<div><p>Whether to use just-in-time (JIT) compilation to speed up computation.
+Default: True.</p>
+</div></blockquote>
+<p><strong>n_jobs</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of cores (threads) to run the model on in parallel. Specify -1
+to use as many cores as possible.
+Default: -1.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A brightness movie depicting the predicted percept, running at <cite>rsample</cite></p>
+<p class="last">frames per second.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Stimulate a single-electrode array:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">implant</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ElectrodeArray</span><span class="p">(</span><span class="s1">&#39;subretinal&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stim</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">Psycho2Pulsetrain</span><span class="p">(</span><span class="n">tsample</span><span class="o">=</span><span class="mi">5</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resp</span> <span class="o">=</span> <span class="n">pulse2percept</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">implant</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>Stimulate a single electrode (&#8216;C3&#8217;) of an Argus I array centered on the
+fovea:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">implant</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ArgusI</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stim</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;C3&#39;</span><span class="p">:</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">Psycho2Pulsetrain</span><span class="p">(</span><span class="n">tsample</span><span class="o">=</span><span class="mi">5</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">20</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resp</span> <span class="o">=</span> <span class="n">pulse2percept</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">implant</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="pulse2percept.html" class="btn btn-neutral" title="pulse2percept" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Michael Beyeler, Ariel Rokem, Geoff Boynton, and Ione Fine, The University of Washington.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

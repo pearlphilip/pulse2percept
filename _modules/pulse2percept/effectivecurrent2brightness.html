@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pulse2percept.effectivecurrent2brightness &mdash; pulse2percept 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pulse2percept 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pulse2percept
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">pulse2percept</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>pulse2percept.effectivecurrent2brightness</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pulse2percept.effectivecurrent2brightness</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*effectivecurrent2brightness -*-</span>
+<span class="sd">&quot;&quot;&quot;effectivecurrent2brightness</span>
+<span class="sd">This transforms the effective current into brightness for a single point in</span>
+<span class="sd">space based on the Horsager model as modified by Devyani</span>
+<span class="sd">Inputs: a vector of effective current over time</span>
+<span class="sd">Output: a vector of brightness over time</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.signal</span> <span class="k">as</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">ss</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">pulse2percept.electrode2currentmap</span> <span class="k">as</span> <span class="nn">e2cm</span>
+<span class="kn">from</span> <span class="nn">pulse2percept</span> <span class="k">import</span> <span class="n">utils</span>
+
+<span class="c1"># reload(logging)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TemporalModel"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel">[docs]</a><span class="k">class</span> <span class="nc">TemporalModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TemporalModel.__init__"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsample</span><span class="o">=</span><span class="mf">0.005</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+                 <span class="n">tau_nfl</span><span class="o">=</span><span class="mf">0.42</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">tau_inl</span><span class="o">=</span><span class="mf">18.0</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+                 <span class="n">tau_ca</span><span class="o">=</span><span class="mf">45.25</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">scale_ca</span><span class="o">=</span><span class="mf">42.1</span><span class="p">,</span>
+                 <span class="n">tau_slow</span><span class="o">=</span><span class="mf">26.25</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">scale_slow</span><span class="o">=</span><span class="mf">1150.0</span><span class="p">,</span>
+                 <span class="n">lweight</span><span class="o">=</span><span class="mf">0.636</span><span class="p">,</span> <span class="n">aweight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                 <span class="n">slope</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mf">15.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Temporal Sensitivity Model</span>
+
+<span class="sd">        A model of temporal integration from retina pixels.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tsample : float</span>
+<span class="sd">            Sampling time step (seconds). Default: 5e-6 s.</span>
+<span class="sd">        tau_nfl : float</span>
+<span class="sd">            Time decay constant for the fast leaky integrater of the nerve</span>
+<span class="sd">            fiber layer (NFL); i.e., ganglion cell layer.</span>
+<span class="sd">            This is only important in combination with epiretinal electrode</span>
+<span class="sd">            arrays. Default: 45.25 / 1000 s.</span>
+<span class="sd">        tau_inl : float</span>
+<span class="sd">            Time decay constant for the fast leaky integrater of the inner</span>
+<span class="sd">            nuclear layer (INL); i.e., bipolar cell layer.</span>
+<span class="sd">            This is only important in combination with subretinal electrode</span>
+<span class="sd">            arrays. Default: 18.0 / 1000 s.</span>
+<span class="sd">        tau_ca : float</span>
+<span class="sd">            Time decay constant for the charge accumulation, has values</span>
+<span class="sd">            between 38 - 57 ms. Default: 45.25 / 1000 s.</span>
+<span class="sd">        scale_ca : float, optional</span>
+<span class="sd">            Scaling factor applied to charge accumulation (used to be called</span>
+<span class="sd">            epsilon). Default: 42.1.</span>
+<span class="sd">        tau_slow : float</span>
+<span class="sd">            Time decay constant for the slow leaky integrator.</span>
+<span class="sd">            Default: 26.25 / 1000 s.</span>
+<span class="sd">        scale_slow : float</span>
+<span class="sd">            Scaling factor applied to the output of the cascade, to make</span>
+<span class="sd">            output values interpretable brightness values &gt;= 0.</span>
+<span class="sd">            Default: 1150.0</span>
+<span class="sd">        lweight : float</span>
+<span class="sd">            Relative weight applied to responses from bipolar cells (weight</span>
+<span class="sd">            of ganglion cells is 1).</span>
+<span class="sd">            Default: 0.636.</span>
+<span class="sd">        aweight : float</span>
+<span class="sd">            Relative weight applied to anodic charges (weight of cathodic</span>
+<span class="sd">            charges is 1).</span>
+<span class="sd">            Default: 0.5.</span>
+<span class="sd">        slope : float</span>
+<span class="sd">            Slope of the logistic function in the stationary nonlinearity</span>
+<span class="sd">            stage. Default: 3. In normalized units of perceptual response</span>
+<span class="sd">            perhaps should be 2.98</span>
+<span class="sd">        shift : float</span>
+<span class="sd">            Shift of the logistic function in the stationary nonlinearity</span>
+<span class="sd">            stage. Default: 16. In normalized units of perceptual response</span>
+<span class="sd">            perhaps should be 15.9</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span> <span class="o">=</span> <span class="n">tsample</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau_nfl</span> <span class="o">=</span> <span class="n">tau_nfl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau_inl</span> <span class="o">=</span> <span class="n">tau_inl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau_ca</span> <span class="o">=</span> <span class="n">tau_ca</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_ca</span> <span class="o">=</span> <span class="n">scale_ca</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau_slow</span> <span class="o">=</span> <span class="n">tau_slow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slope</span> <span class="o">=</span> <span class="n">slope</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="n">shift</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lweight</span> <span class="o">=</span> <span class="n">lweight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aweight</span> <span class="o">=</span> <span class="n">aweight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_slow</span> <span class="o">=</span> <span class="n">scale_slow</span>
+
+        <span class="c1"># perform one-time setup calculations</span>
+        <span class="c1"># Gamma functions used as convolution kernels do not depend on input</span>
+        <span class="c1"># data, hence can be calculated once, then re-used (trade off memory</span>
+        <span class="c1"># for speed).</span>
+        <span class="c1"># gamma_nfl and gamma_inl are used to calculate the fast response in</span>
+        <span class="c1"># bipolar and ganglion cells respectively</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_inl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_inl</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_inl</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_nfl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_nfl</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_nfl</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+        <span class="c1"># gamma_ca is used to calculate charge accumulation</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_ca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_ca</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_ca</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+        <span class="c1"># gamma_slow is used to calculate the slow response</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_slow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_slow</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_slow</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TemporalModel.fast_response"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel.fast_response">[docs]</a>    <span class="k">def</span> <span class="nf">fast_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stim</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">dojit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">usefft</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fast response function (Box 2) for the bipolar layer</span>
+
+<span class="sd">        Convolve a stimulus `stim` with a temporal low-pass filter (1-stage</span>
+<span class="sd">        gamma) with time constant `self.tau_inl` ~ 14ms representing bipolars.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stim : array</span>
+<span class="sd">           Temporal signal to process, stim(r,t) in Nanduri et al. (2012).</span>
+<span class="sd">        dojit : bool, optional</span>
+<span class="sd">           If True (default), use numba just-in-time compilation.</span>
+<span class="sd">        usefft : bool, optional</span>
+<span class="sd">           If False (default), use sparseconv, else fftconvolve.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Fast response, b2(r,t) in Nanduri et al. (2012).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The function utils.sparseconv can be much faster than np.convolve and</span>
+<span class="sd">        signal.fftconvolve if `stim` is sparse and much longer than the</span>
+<span class="sd">        convolution kernel.</span>
+
+<span class="sd">        The output is not converted to a TimeSeries object for speedup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># FFT is faster on non-sparse data</span>
+        <span class="k">if</span> <span class="n">usefft</span><span class="p">:</span>
+            <span class="n">conv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span> <span class="o">*</span> <span class="n">signal</span><span class="o">.</span><span class="n">fftconvolve</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">conv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span> <span class="o">*</span> <span class="n">utils</span><span class="o">.</span><span class="n">sparseconv</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">stim</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span>
+                                                   <span class="n">dojit</span><span class="o">=</span><span class="n">dojit</span><span class="p">)</span>
+            <span class="c1"># Cut off the tail of the convolution to make the output signal</span>
+            <span class="c1"># match the dimensions of the input signal.</span>
+        <span class="k">return</span> <span class="n">conv</span><span class="p">[:</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="TemporalModel.stationary_nonlinearity"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel.stationary_nonlinearity">[docs]</a>    <span class="k">def</span> <span class="nf">stationary_nonlinearity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Stationary nonlinearity (Box 4)</span>
+
+<span class="sd">        Nonlinearly rescale a temporal signal `stim` across space and time,</span>
+<span class="sd">        based on a sigmoidal function dependent on the maximum value of `stim`.</span>
+<span class="sd">        This is Box 4 in Nanduri et al. (2012).</span>
+
+<span class="sd">        The parameter values of the asymptote, slope, and shift of the logistic</span>
+<span class="sd">        function are given by self.asymptote, self.slope, and self.shift,</span>
+<span class="sd">        respectively.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stim : array</span>
+<span class="sd">           Temporal signal to process, stim(r,t) in Nanduri et al. (2012).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Rescaled signal, b4(r,t) in Nanduri et al. (2012).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Conversion to TimeSeries is avoided for the sake of speedup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># use expit (logistic) function for speedup</span>
+        <span class="n">stim_max</span> <span class="o">=</span> <span class="n">stim</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">expit</span><span class="p">((</span><span class="n">stim_max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="p">)</span>
+
+        <span class="c1"># avoid division by zero</span>
+        <span class="k">return</span> <span class="n">stim</span> <span class="o">/</span> <span class="p">(</span><span class="n">stim_max</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span></div>
+
+<div class="viewcode-block" id="TemporalModel.slow_response"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel.slow_response">[docs]</a>    <span class="k">def</span> <span class="nf">slow_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Slow response function (Box 5)</span>
+
+<span class="sd">        Convolve a stimulus `stim` with a low-pass filter (3-stage gamma)</span>
+<span class="sd">        with time constant self.tau_slow.</span>
+<span class="sd">        This is Box 5 in Nanduri et al. (2012).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stim : array</span>
+<span class="sd">           Temporal signal to process, stim(r,t) in Nanduri et al. (2012)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Slow response, b5(r,t) in Nanduri et al. (2012).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This is by far the most computationally involved part of the perceptual</span>
+<span class="sd">        sensitivity model.</span>
+
+<span class="sd">        Conversion to TimeSeries is avoided for the sake of speedup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># No need to zero-pad: fftconvolve already takes care of optimal</span>
+        <span class="c1"># kernel/data size</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">fftconvolve</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma_slow</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Cut off the tail of the convolution to make the output signal match</span>
+        <span class="c1"># the dimensions of the input signal.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_slow</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span> <span class="o">*</span> <span class="n">conv</span><span class="p">[:</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="TemporalModel.model_cascade"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel.model_cascade">[docs]</a>    <span class="k">def</span> <span class="nf">model_cascade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ecm</span><span class="p">,</span> <span class="n">dolayers</span><span class="p">,</span> <span class="n">dojit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Model cascade according to Nanduri et al. (2012).</span>
+
+<span class="sd">        The &#39;Nanduri&#39; model calculates the fast response first, followed by the</span>
+<span class="sd">        current accumulation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ecm : TimeSeries</span>
+<span class="sd">            Effective current</span>
+<span class="sd">        dolayers : list</span>
+
+<span class="sd">            List of retinal layers to simulate. Choose from:</span>
+<span class="sd">            - &#39;NFL&#39;: nerve fiber layer</span>
+<span class="sd">            - &#39;INL&#39;: inner nuclear layer</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Brightness response over time. In Nanduri et al. (2012), the</span>
+<span class="sd">        maximum value of this signal was used to represent the perceptual</span>
+<span class="sd">        brightness of a particular location in space, B(r).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sparse convolution is faster if input is sparse. This is true for</span>
+        <span class="c1"># the first convolution in the cascade, but not for subsequent ones.</span>
+        <span class="n">usefft</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="s1">&#39;INL&#39;</span> <span class="ow">in</span> <span class="n">dolayers</span><span class="p">:</span>
+            <span class="n">resp_inl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fast_response</span><span class="p">(</span><span class="n">ecm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma_inl</span><span class="p">,</span>
+                                          <span class="n">dojit</span><span class="o">=</span><span class="n">dojit</span><span class="p">,</span>
+                                          <span class="n">usefft</span><span class="o">=</span><span class="n">usefft</span><span class="p">)</span>
+            <span class="c1"># Set `usefft` to True for subsequent stages of the cascade</span>
+            <span class="n">usefft</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resp_inl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ecm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="s1">&#39;NFL&#39;</span> <span class="ow">in</span> <span class="n">dolayers</span><span class="p">:</span>
+            <span class="n">resp_nfl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fast_response</span><span class="p">(</span><span class="n">ecm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma_nfl</span><span class="p">,</span>
+                                          <span class="n">dojit</span><span class="o">=</span><span class="n">dojit</span><span class="p">,</span>
+                                          <span class="n">usefft</span><span class="o">=</span><span class="n">usefft</span><span class="p">)</span>
+            <span class="c1"># Set `usefft` to True for subsequent stages of the cascade</span>
+            <span class="n">usefft</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resp_nfl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ecm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="c1"># Here we are converting from current  - where a cathodic (effective)</span>
+        <span class="c1"># stimulus is negative - to a vague concept of neuronal response,</span>
+        <span class="c1"># where positive implies a neuronal response.</span>
+        <span class="c1"># There is a rectification here because we used to assume that the</span>
+        <span class="c1"># anodic part of the pulse is ineffective (which is wrong).</span>
+        <span class="n">resp_cathodic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lweight</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="n">resp_inl</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="n">resp_nfl</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">resp_anodic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lweight</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">resp_inl</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">resp_nfl</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">resp_cathodic</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">aweight</span> <span class="o">*</span> <span class="n">resp_anodic</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stationary_nonlinearity</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slow_response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tsample</span><span class="p">,</span> <span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TemporalModel.calc_per_electrode"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_electrode">[docs]</a>    <span class="k">def</span> <span class="nf">calc_per_electrode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pt</span><span class="p">):</span>
+        <span class="n">ca</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">pt</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">fftconvolve</span><span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma_ca</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+        <span class="n">conv_ca</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_ca</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span> <span class="o">*</span> <span class="n">tmp</span><span class="p">[:</span><span class="n">pt</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">]</span>
+
+        <span class="n">pt_entry</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># negative elements first</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">data</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pt_entry</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">conv_ca</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># then positive elements</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pt_entry</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">conv_ca</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pt_entry</span></div>
+
+<div class="viewcode-block" id="TemporalModel.calc_per_pixel"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.TemporalModel.calc_per_pixel">[docs]</a>    <span class="k">def</span> <span class="nf">calc_per_pixel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ecs_item</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="n">resample</span><span class="p">,</span> <span class="n">dolayers</span><span class="p">,</span> <span class="n">dojit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># Convert the current map to one that includes axon streaks</span>
+        <span class="n">ecm</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ecm</span><span class="p">(</span><span class="n">ecs_item</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsample</span><span class="p">)</span>
+
+        <span class="c1"># Run the model cascade</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_cascade</span><span class="p">(</span><span class="n">ecm</span><span class="p">,</span> <span class="n">dolayers</span><span class="p">,</span> <span class="n">dojit</span><span class="o">=</span><span class="n">dojit</span><span class="p">)</span>
+
+        <span class="c1"># Downsample output</span>
+        <span class="n">sr</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">resample</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sr</span></div></div>
+
+
+<div class="viewcode-block" id="pulse2percept"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.pulse2percept">[docs]</a><span class="k">def</span> <span class="nf">pulse2percept</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">implant</span><span class="p">,</span> <span class="n">tm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retina</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">rsample</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">use_ecs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;joblib&#39;</span><span class="p">,</span> <span class="n">dojit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transforms an input stimulus to a percept</span>
+
+<span class="sd">    This function passes an input stimulus `stim` to a retinal `implant`,</span>
+<span class="sd">    which is placed on a simulated `retina`, and produces a predicted percept</span>
+<span class="sd">    by means of the temporal model `tm`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stim : utils.TimeSeries|list|dict</span>
+<span class="sd">        There are several ways to specify an input stimulus:</span>
+
+<span class="sd">        - For a single-electrode array, pass a single pulse train; i.e., a</span>
+<span class="sd">          single utils.TimeSeries object.</span>
+<span class="sd">        - For a multi-electrode array, pass a list of pulse trains; i.e., one</span>
+<span class="sd">          pulse train per electrode.</span>
+<span class="sd">        - For a multi-electrode array, specify all electrodes that should</span>
+<span class="sd">          receive non-zero pulse trains by name.</span>
+<span class="sd">    implant : e2cm.ElectrodeArray</span>
+<span class="sd">        An ElectrodeArray object that describes the implant.</span>
+<span class="sd">    tm : ec2b.TemporalModel, optional</span>
+<span class="sd">        A model of temporal sensitivity.</span>
+<span class="sd">    retina : e2cm.Retina, optional</span>
+<span class="sd">        A Retina object specyfing the geometry of the retina.</span>
+<span class="sd">    rsample : int, optional</span>
+<span class="sd">        Resampling factor. For example, a resampling factor of 3 keeps</span>
+<span class="sd">        only every third frame.</span>
+<span class="sd">        Default: 30 frames per second.</span>
+<span class="sd">    scale_charge : float, optional</span>
+<span class="sd">        Scaling factor applied to charge accumulation (used to be called</span>
+<span class="sd">        epsilon). Default: 42.1.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        Ignore pixels whose effective current is smaller than a fraction `tol`</span>
+<span class="sd">        of the max value.</span>
+<span class="sd">        Default: 0.05.</span>
+<span class="sd">    use_ecs : bool, optional</span>
+<span class="sd">        Flag whether to use effective current spread (True) or regular</span>
+<span class="sd">        current spread, unaffected by axon pathways (False).</span>
+<span class="sd">        Default: True.</span>
+<span class="sd">    engine : str, optional</span>
+<span class="sd">        Which computational backend to use:</span>
+<span class="sd">        - &#39;serial&#39;: Single-core computation</span>
+<span class="sd">        - &#39;joblib&#39;: Parallelization via joblib (requires `pip install joblib`)</span>
+<span class="sd">        - &#39;dask&#39;: Parallelization via dask (requires `pip install dask`)</span>
+<span class="sd">        Default: joblib.</span>
+<span class="sd">    dojit : bool, optional</span>
+<span class="sd">        Whether to use just-in-time (JIT) compilation to speed up computation.</span>
+<span class="sd">        Default: True.</span>
+<span class="sd">    n_jobs : int, optional</span>
+<span class="sd">        Number of cores (threads) to run the model on in parallel. Specify -1</span>
+<span class="sd">        to use as many cores as possible.</span>
+<span class="sd">        Default: -1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A brightness movie depicting the predicted percept, running at `rsample`</span>
+<span class="sd">    frames per second.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Stimulate a single-electrode array:</span>
+
+<span class="sd">    &gt;&gt;&gt; implant = e2cm.ElectrodeArray(&#39;subretinal&#39;, 0, 0, 0, 0)</span>
+<span class="sd">    &gt;&gt;&gt; stim = e2cm.Psycho2Pulsetrain(tsample=5e-6, freq=50, amp=20)</span>
+<span class="sd">    &gt;&gt;&gt; resp = pulse2percept(stim, implant)  # doctest: +SKIP</span>
+
+<span class="sd">    Stimulate a single electrode (&#39;C3&#39;) of an Argus I array centered on the</span>
+<span class="sd">    fovea:</span>
+
+<span class="sd">    &gt;&gt;&gt; implant = e2cm.ArgusI()</span>
+<span class="sd">    &gt;&gt;&gt; stim = {&#39;C3&#39;: e2cm.Psycho2Pulsetrain(tsample=5e-6, freq=50, amp=20)}</span>
+<span class="sd">    &gt;&gt;&gt; resp = pulse2percept(stim, implant)  # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check type to avoid backwards compatibility issues</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">implant</span><span class="p">,</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ElectrodeArray</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`implant` must be of type ec2b.ElectrodeArray&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Parse `stim` (either single pulse train or a list/dict of pulse trains),</span>
+    <span class="c1"># and generate a list of pulse trains, one for each electrode</span>
+    <span class="n">pt_list</span> <span class="o">=</span> <span class="n">parse_pulse_trains</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">implant</span><span class="p">)</span>
+
+    <span class="c1"># Generate a standard temporal model if necessary</span>
+    <span class="k">if</span> <span class="n">tm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tm</span> <span class="o">=</span> <span class="n">TemporalModel</span><span class="p">(</span><span class="n">pt_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tsample</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span> <span class="n">TemporalModel</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`tm` must be of type ec2b.TemporalModel&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Generate a retina if necessary</span>
+    <span class="k">if</span> <span class="n">retina</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Make sure implant fits on retina</span>
+        <span class="n">round_to</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># round to nearest (microns)</span>
+        <span class="n">cspread</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># expected current spread (microns)</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">x_center</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">implant</span><span class="p">]</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">y_center</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">implant</span><span class="p">]</span>
+        <span class="n">xlo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">-</span> <span class="n">cspread</span><span class="p">)</span> <span class="o">/</span> <span class="n">round_to</span><span class="p">)</span> <span class="o">*</span> <span class="n">round_to</span>
+        <span class="n">xhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">+</span> <span class="n">cspread</span><span class="p">)</span> <span class="o">/</span> <span class="n">round_to</span><span class="p">)</span> <span class="o">*</span> <span class="n">round_to</span>
+        <span class="n">ylo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">-</span> <span class="n">cspread</span><span class="p">)</span> <span class="o">/</span> <span class="n">round_to</span><span class="p">)</span> <span class="o">*</span> <span class="n">round_to</span>
+        <span class="n">yhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">+</span> <span class="n">cspread</span><span class="p">)</span> <span class="o">/</span> <span class="n">round_to</span><span class="p">)</span> <span class="o">*</span> <span class="n">round_to</span>
+        <span class="n">retina</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">Retina</span><span class="p">(</span><span class="n">xlo</span><span class="o">=</span><span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="o">=</span><span class="n">xhi</span><span class="p">,</span> <span class="n">ylo</span><span class="o">=</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="o">=</span><span class="n">yhi</span><span class="p">,</span>
+                             <span class="n">save_data</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">retina</span><span class="p">,</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">Retina</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`retina` object must be of type e2cm.Retina&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Perform any necessary calculations per electrode</span>
+    <span class="n">pt_list</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parfor</span><span class="p">(</span><span class="n">tm</span><span class="o">.</span><span class="n">calc_per_electrode</span><span class="p">,</span> <span class="n">pt_list</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span>
+                           <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
+
+    <span class="c1"># Which layer to simulate is given by implant type.</span>
+    <span class="c1"># For now, both implant types process the same two layers. In the</span>
+    <span class="c1"># future, these layers might differ. Order doesn&#39;t matter.</span>
+    <span class="k">if</span> <span class="n">implant</span><span class="o">.</span><span class="n">etype</span> <span class="o">==</span> <span class="s1">&#39;epiretinal&#39;</span><span class="p">:</span>
+        <span class="n">dolayers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NFL&#39;</span><span class="p">,</span> <span class="s1">&#39;INL&#39;</span><span class="p">]</span>  <span class="c1"># nerve fiber layer</span>
+    <span class="k">elif</span> <span class="n">implant</span><span class="o">.</span><span class="n">etype</span> <span class="o">==</span> <span class="s1">&#39;subretinal&#39;</span><span class="p">:</span>
+        <span class="n">dolayers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NFL&#39;</span><span class="p">,</span> <span class="s1">&#39;INL&#39;</span><span class="p">]</span>  <span class="c1"># inner nuclear layer</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">e_s</span> <span class="o">=</span> <span class="s2">&quot;Supported electrode types are &#39;epiretinal&#39;, &#39;subretinal&#39;&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">e_s</span><span class="p">)</span>
+
+    <span class="c1"># Derive the effective current spread</span>
+    <span class="k">if</span> <span class="n">use_ecs</span><span class="p">:</span>
+        <span class="n">ecs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">retina</span><span class="o">.</span><span class="n">electrode_ecs</span><span class="p">(</span><span class="n">implant</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ecs</span> <span class="o">=</span> <span class="n">retina</span><span class="o">.</span><span class="n">electrode_ecs</span><span class="p">(</span><span class="n">implant</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the max of every current spread map</span>
+    <span class="n">lmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">ecs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="s1">&#39;INL&#39;</span> <span class="ow">in</span> <span class="n">dolayers</span><span class="p">:</span>
+        <span class="n">lmax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ecs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s1">&#39;NFL&#39;</span> <span class="ow">in</span> <span class="n">dolayers</span><span class="p">:</span>
+        <span class="n">lmax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ecs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># `ecs_list` is a pixel by `n` list where `n` is the number of layers</span>
+    <span class="c1"># being simulated. Each value in `ecs_list` is the current contributed</span>
+    <span class="c1"># by each electrode for that spatial location</span>
+    <span class="n">ecs_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">retina</span><span class="o">.</span><span class="n">gridx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">retina</span><span class="o">.</span><span class="n">gridx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="c1"># If any of the used current spread maps at [yy, xx] are above</span>
+            <span class="c1"># tolerance, we need to process that pixel</span>
+            <span class="n">process_pixel</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="s1">&#39;INL&#39;</span> <span class="ow">in</span> <span class="n">dolayers</span><span class="p">:</span>
+                <span class="c1"># For this pixel: Check if the ecs in any layer is large</span>
+                <span class="c1"># enough compared to the max across pixels within the layer</span>
+                <span class="n">process_pixel</span> <span class="o">|=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">ecs</span><span class="p">[</span><span class="n">yy</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&gt;=</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">lmax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+            <span class="k">if</span> <span class="s1">&#39;NFL&#39;</span> <span class="ow">in</span> <span class="n">dolayers</span><span class="p">:</span>
+                <span class="n">process_pixel</span> <span class="o">|=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">ecs</span><span class="p">[</span><span class="n">yy</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&gt;=</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">lmax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+
+            <span class="k">if</span> <span class="n">process_pixel</span><span class="p">:</span>
+                <span class="n">ecs_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ecs</span><span class="p">[</span><span class="n">yy</span><span class="p">,</span> <span class="n">xx</span><span class="p">])</span>
+                <span class="n">idx_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">yy</span><span class="p">,</span> <span class="n">xx</span><span class="p">])</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;tol=</span><span class="si">%.1f%%</span><span class="s2">, </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2"> px selected&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tol</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+                                                   <span class="nb">len</span><span class="p">(</span><span class="n">ecs_list</span><span class="p">),</span>
+                                                   <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">ecs</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])))</span>
+
+    <span class="n">sr_list</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parfor</span><span class="p">(</span><span class="n">tm</span><span class="o">.</span><span class="n">calc_per_pixel</span><span class="p">,</span> <span class="n">ecs_list</span><span class="p">,</span>
+                           <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span>
+                           <span class="n">func_args</span><span class="o">=</span><span class="p">[</span><span class="n">pt_list</span><span class="p">,</span> <span class="n">rsample</span><span class="p">,</span> <span class="n">dolayers</span><span class="p">,</span> <span class="n">dojit</span><span class="p">])</span>
+    <span class="n">bm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">retina</span><span class="o">.</span><span class="n">gridx</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="n">sr_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">))</span>
+    <span class="n">idxer</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idx_list</span><span class="p">)[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">bm</span><span class="p">[</span><span class="n">idxer</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">sr_list</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">sr_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tsample</span><span class="p">,</span> <span class="n">bm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="parse_pulse_trains"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.parse_pulse_trains">[docs]</a><span class="k">def</span> <span class="nf">parse_pulse_trains</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">implant</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse input stimulus and convert to list of pulse trains</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stim : utils.TimeSeries|list|dict</span>
+<span class="sd">        There are several ways to specify an input stimulus:</span>
+
+<span class="sd">        - For a single-electrode array, pass a single pulse train; i.e., a</span>
+<span class="sd">          single utils.TimeSeries object.</span>
+<span class="sd">        - For a multi-electrode array, pass a list of pulse trains, where</span>
+<span class="sd">          every pulse train is a utils.TimeSeries object; i.e., one pulse</span>
+<span class="sd">          train per electrode.</span>
+<span class="sd">        - For a multi-electrode array, specify all electrodes that should</span>
+<span class="sd">          receive non-zero pulse trains by name in a dictionary. The key</span>
+<span class="sd">          of each element is the electrode name, the value is a pulse train.</span>
+<span class="sd">          Example: stim = {&#39;E1&#39;: pt, &#39;stim&#39;: pt}, where &#39;E1&#39; and &#39;stim&#39; are</span>
+<span class="sd">          electrode names, and `pt` is a utils.TimeSeries object.</span>
+<span class="sd">    implant : e2cm.ElectrodeArray</span>
+<span class="sd">        An ElectrodeArray object that describes the implant.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A list of pulse trains; one pulse train per electrode.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Parse input stimulus</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">):</span>
+        <span class="c1"># `stim` is a single object: This is only allowed if the implant</span>
+        <span class="c1"># has only one electrode</span>
+        <span class="k">if</span> <span class="n">implant</span><span class="o">.</span><span class="n">num_electrodes</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">e_s</span> <span class="o">=</span> <span class="s2">&quot;More than 1 electrode given, use a list of pulse trains&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">e_s</span><span class="p">)</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="p">[</span><span class="n">stim</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="c1"># `stim` is a dictionary: Look up electrode names and assign pulse</span>
+        <span class="c1"># trains, fill the rest with zeros</span>
+
+        <span class="c1"># Get right size from first dict element, then generate all zeros</span>
+        <span class="n">idx0</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stim</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pt_zero</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">stim</span><span class="p">[</span><span class="n">idx0</span><span class="p">]</span><span class="o">.</span><span class="n">tsample</span><span class="p">,</span>
+                                   <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">stim</span><span class="p">[</span><span class="n">idx0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="p">[</span><span class="n">pt_zero</span><span class="p">]</span> <span class="o">*</span> <span class="n">implant</span><span class="o">.</span><span class="n">num_electrodes</span>
+
+        <span class="c1"># Iterate over dictionary and assign non-zero pulse trains to</span>
+        <span class="c1"># corresponding electrodes</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">stim</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">el_idx</span> <span class="o">=</span> <span class="n">implant</span><span class="o">.</span><span class="n">get_index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">el_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pt</span><span class="p">[</span><span class="n">el_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">e_s</span> <span class="o">=</span> <span class="s2">&quot;Could not find electrode with name &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">key</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">e_s</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Else, `stim` must be a list of pulse trains, one for each electrode</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stim</span><span class="p">)</span> <span class="o">!=</span> <span class="n">implant</span><span class="o">.</span><span class="n">num_electrodes</span><span class="p">:</span>
+            <span class="n">e_s</span> <span class="o">=</span> <span class="s2">&quot;Number of pulse trains must match number of electrodes&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">e_s</span><span class="p">)</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="n">stim</span>
+
+    <span class="k">return</span> <span class="n">pt</span></div>
+
+
+<div class="viewcode-block" id="get_brightest_frame"><a class="viewcode-back" href="../../reference/pulse2percept.effectivecurrent2brightness.html#pulse2percept.effectivecurrent2brightness.get_brightest_frame">[docs]</a><span class="k">def</span> <span class="nf">get_brightest_frame</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return brightest frame of a brightness movie</span>
+
+<span class="sd">    This function returns the frame of a brightness movie that contains the</span>
+<span class="sd">    brightest pixel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    resp : TimeSeries</span>
+<span class="sd">        The brightness movie as a TimeSeries object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find brightest element</span>
+    <span class="n">idx_px</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+
+    <span class="c1"># Find frame that contains brightest pixel using `unravel`, which maps</span>
+    <span class="c1"># the flat index `idx_px` onto the high-dimensional indices (x,y,z).</span>
+    <span class="c1"># What we want is index `z` (i.e., the frame index), given by the last</span>
+    <span class="c1"># element in the return argument.</span>
+    <span class="n">idx_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">idx_px</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">shape</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">tsample</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">idx_frame</span><span class="p">])</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Michael Beyeler, Ariel Rokem, Geoff Boynton, and Ione Fine, The University of Washington.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

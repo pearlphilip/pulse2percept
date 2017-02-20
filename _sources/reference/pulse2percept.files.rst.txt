@@ -1,0 +1,37 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`files`
+============
+.. automodule:: pulse2percept.files
+
+.. currentmodule:: pulse2percept.files
+.. autosummary::
+
+   find_files_like
+   npy2movie
+   savemoviefiles
+   scale
+
+
+.. currentmodule:: pulse2percept.files
+
+find_files_like
+~~~~~~~~~~~~~~~
+
+.. autofunction:: find_files_like
+
+npy2movie
+~~~~~~~~~
+
+.. autofunction:: npy2movie
+
+savemoviefiles
+~~~~~~~~~~~~~~
+
+.. autofunction:: savemoviefiles
+
+scale
+~~~~~
+
+.. autofunction:: scale
+

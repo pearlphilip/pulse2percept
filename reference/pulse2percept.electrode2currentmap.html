@@ -1,0 +1,1286 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>electrode2currentmap &mdash; pulse2percept 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pulse2percept 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Reference" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pulse2percept
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.html"><code class="docutils literal"><span class="pre">pulse2percept</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.effectivecurrent2brightness.html"><code class="docutils literal"><span class="pre">effectivecurrent2brightness</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">electrode2currentmap</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#argusi"><code class="docutils literal"><span class="pre">ArgusI</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#argusii"><code class="docutils literal"><span class="pre">ArgusII</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#electrode"><code class="docutils literal"><span class="pre">Electrode</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#electrodearray"><code class="docutils literal"><span class="pre">ElectrodeArray</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#movie2pulsetrain"><code class="docutils literal"><span class="pre">Movie2Pulsetrain</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#psycho2pulsetrain"><code class="docutils literal"><span class="pre">Psycho2Pulsetrain</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#retina"><code class="docutils literal"><span class="pre">Retina</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deg2micron">deg2micron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ecm">ecm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gamma">gamma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-pulse">get_pulse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image2pulsetrain">image2pulsetrain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#micron2deg">micron2deg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receptive-field">receptive_field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retinalmovie2electrodtimeseries">retinalmovie2electrodtimeseries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.files.html"><code class="docutils literal"><span class="pre">files</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.oyster.html"><code class="docutils literal"><span class="pre">oyster</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pulse2percept</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">electrode2currentmap</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/pulse2percept.electrode2currentmap.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pulse2percept.electrode2currentmap">
+<span id="electrode2currentmap"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">electrode2currentmap</span></code><a class="headerlink" href="#module-pulse2percept.electrode2currentmap" title="Permalink to this headline">¶</a></h1>
+<p>Functions for transforming electrode specifications into a current map</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.ArgusI" title="pulse2percept.electrode2currentmap.ArgusI"><code class="xref py py-obj docutils literal"><span class="pre">ArgusI</span></code></a>([x_center,&nbsp;y_center,&nbsp;h,&nbsp;rot,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.ArgusII" title="pulse2percept.electrode2currentmap.ArgusII"><code class="xref py py-obj docutils literal"><span class="pre">ArgusII</span></code></a>([x_center,&nbsp;y_center,&nbsp;h,&nbsp;rot])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Electrode" title="pulse2percept.electrode2currentmap.Electrode"><code class="xref py py-obj docutils literal"><span class="pre">Electrode</span></code></a>(etype,&nbsp;radius,&nbsp;x_center,&nbsp;y_center,&nbsp;...)</td>
+<td><p class="rubric">Attributes</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.ElectrodeArray" title="pulse2percept.electrode2currentmap.ElectrodeArray"><code class="xref py py-obj docutils literal"><span class="pre">ElectrodeArray</span></code></a>(etype,&nbsp;radii,&nbsp;xs,&nbsp;ys,&nbsp;hs[,&nbsp;names])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Movie2Pulsetrain" title="pulse2percept.electrode2currentmap.Movie2Pulsetrain"><code class="xref py py-obj docutils literal"><span class="pre">Movie2Pulsetrain</span></code></a>(rflum,&nbsp;tsample[,&nbsp;fps,&nbsp;...])</td>
+<td>Is used to create pulse-train stimulus based on luminance over time from</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Psycho2Pulsetrain" title="pulse2percept.electrode2currentmap.Psycho2Pulsetrain"><code class="xref py py-obj docutils literal"><span class="pre">Psycho2Pulsetrain</span></code></a>(tsample[,&nbsp;freq,&nbsp;amp,&nbsp;dur,&nbsp;...])</td>
+<td>Is used to generate pulse trains to simulate psychophysical experiments.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Retina" title="pulse2percept.electrode2currentmap.Retina"><code class="xref py py-obj docutils literal"><span class="pre">Retina</span></code></a>([xlo,&nbsp;xhi,&nbsp;ylo,&nbsp;yhi,&nbsp;sampling,&nbsp;...])</td>
+<td>Represent the retinal coordinate frame</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.deg2micron" title="pulse2percept.electrode2currentmap.deg2micron"><code class="xref py py-obj docutils literal"><span class="pre">deg2micron</span></code></a>(deg)</td>
+<td>Transform a distance from degrees to microns</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.ecm" title="pulse2percept.electrode2currentmap.ecm"><code class="xref py py-obj docutils literal"><span class="pre">ecm</span></code></a>(ecs_item,&nbsp;ptrain_data,&nbsp;tsample)</td>
+<td>effective current map from the electrodes in one spatial location</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.gamma" title="pulse2percept.electrode2currentmap.gamma"><code class="xref py py-obj docutils literal"><span class="pre">gamma</span></code></a>(n,&nbsp;tau,&nbsp;t)</td>
+<td>Returns a gamma function from in [0, t]:</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.get_pulse" title="pulse2percept.electrode2currentmap.get_pulse"><code class="xref py py-obj docutils literal"><span class="pre">get_pulse</span></code></a>(pulse_dur,&nbsp;tsample,&nbsp;...)</td>
+<td>Returns a single biphasic pulse.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.image2pulsetrain" title="pulse2percept.electrode2currentmap.image2pulsetrain"><code class="xref py py-obj docutils literal"><span class="pre">image2pulsetrain</span></code></a>(img,&nbsp;implant[,&nbsp;coding,&nbsp;...])</td>
+<td>Converts an image into a series of pulse trains</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.micron2deg" title="pulse2percept.electrode2currentmap.micron2deg"><code class="xref py py-obj docutils literal"><span class="pre">micron2deg</span></code></a>(micron)</td>
+<td>Transform a distance from microns to degrees</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.receptive_field" title="pulse2percept.electrode2currentmap.receptive_field"><code class="xref py py-obj docutils literal"><span class="pre">receptive_field</span></code></a>(electrode,&nbsp;xg,&nbsp;yg[,&nbsp;rftype,&nbsp;...])</td>
+<td>An electrode&#8217;s receptive field</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.retinalmovie2electrodtimeseries" title="pulse2percept.electrode2currentmap.retinalmovie2electrodtimeseries"><code class="xref py py-obj docutils literal"><span class="pre">retinalmovie2electrodtimeseries</span></code></a>(rf,&nbsp;movie)</td>
+<td>Calculates the luminance over time for each electrodes receptive field.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="argusi">
+<h2><a class="reference internal" href="#pulse2percept.electrode2currentmap.ArgusI" title="pulse2percept.electrode2currentmap.ArgusI"><code class="xref py py-class docutils literal"><span class="pre">ArgusI</span></code></a><a class="headerlink" href="#argusi" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.electrode2currentmap.ArgusI">
+<em class="property">class </em><code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">ArgusI</code><span class="sig-paren">(</span><em>x_center=0</em>, <em>y_center=0</em>, <em>h=0</em>, <em>rot=0.0</em>, <em>use_legacy_names=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ArgusI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ArgusI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pulse2percept.electrode2currentmap.ElectrodeArray" title="pulse2percept.electrode2currentmap.ElectrodeArray"><code class="xref py py-class docutils literal"><span class="pre">pulse2percept.electrode2currentmap.ElectrodeArray</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_index</span></code>(name)</td>
+<td>Returns the index of an electrode called <cite>name</cite></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.ArgusI.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>x_center=0</em>, <em>y_center=0</em>, <em>h=0</em>, <em>rot=0.0</em>, <em>use_legacy_names=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ArgusI.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ArgusI.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an ArgusI array on the retina</p>
+<p>This function creates an ArgusI array and places it on the retina
+such that the center of the array is located at
+[<cite>x_center</cite>, <cite>y_center</cite>] (microns) and the array is rotated by
+rotation angle <cite>rot</cite> (radians).</p>
+<p>The array is oriented in the visual field as shown in Fig. 1 of
+Horsager et al. (2009); that is, if placed in (0,0), the top two
+rows will lie in the lower retina (upper visual field):</p>
+<pre>
+  y       A1 B1 C1 D1                     260 520 260 520
+  ^       A2 B2 C2 D2   where electrode   520 260 520 260
+  |       A3 B3 C3 D3   diameters are:    260 520 260 520
+  -->x    A4 B4 C4 D4                     520 260 520 260
+</pre><p>Electrode order is: A1, B1, C1, D1, A2, B2, ..., D4.
+If <cite>use_legacy_names</cite> is True, electrode order is: L6, L2, M8, M4, ...
+An electrode can be addressed by index (integer) or name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x_center</strong> : float</p>
+<blockquote>
+<div><p>x coordinate of the array center (um)</p>
+</div></blockquote>
+<p><strong>y_center</strong> : float</p>
+<blockquote>
+<div><p>y coordinate of the array center (um)</p>
+</div></blockquote>
+<p><strong>h</strong> : float || array_like</p>
+<blockquote>
+<div><p>Distance of the array to the retinal surface (um). Either a list
+with 16 entries or a scalar.</p>
+</div></blockquote>
+<p><strong>rot</strong> : float</p>
+<blockquote class="last">
+<div><p>Rotation angle of the array (rad). Positive values denote
+counter-clock-wise rotations.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Create an ArgusI array centered on the fovea, at 100um distance from
+the retina:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pulse2percept</span> <span class="k">import</span> <span class="n">electrode2currentmap</span> <span class="k">as</span> <span class="n">e2cm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">argus</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ArgusI</span><span class="p">(</span><span class="n">x_center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get access to electrode &#8216;B1&#8217;:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_electrode</span> <span class="o">=</span> <span class="n">argus</span><span class="p">[</span><span class="s1">&#39;B1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="argusii">
+<h2><a class="reference internal" href="#pulse2percept.electrode2currentmap.ArgusII" title="pulse2percept.electrode2currentmap.ArgusII"><code class="xref py py-class docutils literal"><span class="pre">ArgusII</span></code></a><a class="headerlink" href="#argusii" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.electrode2currentmap.ArgusII">
+<em class="property">class </em><code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">ArgusII</code><span class="sig-paren">(</span><em>x_center=0</em>, <em>y_center=0</em>, <em>h=0</em>, <em>rot=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ArgusII"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ArgusII" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pulse2percept.electrode2currentmap.ElectrodeArray" title="pulse2percept.electrode2currentmap.ElectrodeArray"><code class="xref py py-class docutils literal"><span class="pre">pulse2percept.electrode2currentmap.ElectrodeArray</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_index</span></code>(name)</td>
+<td>Returns the index of an electrode called <cite>name</cite></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.ArgusII.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>x_center=0</em>, <em>y_center=0</em>, <em>h=0</em>, <em>rot=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ArgusII.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ArgusII.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an ArgusII array on the retina</p>
+<p>This function creates an ArgusII array and places it on the retina
+such that the center of the array is located at
+[<cite>x_center</cite>, <cite>y_center</cite>] (microns) and the array is rotated by
+rotation angle <cite>rot</cite> (radians).</p>
+<p>The array is oriented upright in the visual field, such that an
+array with center (0,0) has the top three rows lie in the lower
+retina (upper visual field), as shown below:</p>
+<pre>
+          A1 A2 A3 A4 A5 A6 A7 A8 A9 A10
+  y       B1 B2 B3 B4 B5 B6 B7 B8 B9 B10
+  ^       C1 C2 C3 C4 C5 C6 C7 C8 C9 C10
+  |       D1 D2 D3 D4 D5 D6 D7 D8 D9 D10
+  -->x    E1 E2 E3 E4 E5 E6 E7 E8 E9 E10
+          F1 F2 F3 F4 F5 F6 F7 F8 F9 F10
+</pre><p>Electrode order is: A1, A2, ..., A10, B1, B2, ..., F10.
+An electrode can be addressed by index (integer) or name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x_center</strong> : float</p>
+<blockquote>
+<div><p>x coordinate of the array center (um)</p>
+</div></blockquote>
+<p><strong>y_center</strong> : float</p>
+<blockquote>
+<div><p>y coordinate of the array center (um)</p>
+</div></blockquote>
+<p><strong>h</strong> : float || array_like</p>
+<blockquote>
+<div><p>Distance of the array to the retinal surface (um). Either a list
+with 60 entries or a scalar.</p>
+</div></blockquote>
+<p><strong>rot</strong> : float</p>
+<blockquote class="last">
+<div><p>Rotation angle of the array (rad). Positive values denote
+counter-clock-wise rotations.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Create an ArgusII array centered on the fovea, at 100um distance from
+the retina:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pulse2percept</span> <span class="k">import</span> <span class="n">electrode2currentmap</span> <span class="k">as</span> <span class="n">e2cm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">argus</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ArgusII</span><span class="p">(</span><span class="n">x_center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get access to electrode &#8216;E7&#8217;:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_electrode</span> <span class="o">=</span> <span class="n">argus</span><span class="p">[</span><span class="s1">&#39;E7&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="electrode">
+<h2><a class="reference internal" href="#pulse2percept.electrode2currentmap.Electrode" title="pulse2percept.electrode2currentmap.Electrode"><code class="xref py py-class docutils literal"><span class="pre">Electrode</span></code></a><a class="headerlink" href="#electrode" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.electrode2currentmap.Electrode">
+<em class="property">class </em><code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">Electrode</code><span class="sig-paren">(</span><em>etype</em>, <em>radius</em>, <em>x_center</em>, <em>y_center</em>, <em>height</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Electrode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Electrode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Electrode.height" title="pulse2percept.electrode2currentmap.Electrode.height"><code class="xref py py-obj docutils literal"><span class="pre">height</span></code></a></td>
+<td>Returns the electrode-retina distance</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Electrode.current_spread" title="pulse2percept.electrode2currentmap.Electrode.current_spread"><code class="xref py py-obj docutils literal"><span class="pre">current_spread</span></code></a>(xg,&nbsp;yg,&nbsp;layer[,&nbsp;alpha,&nbsp;n])</td>
+<td>The current spread due to a current pulse through an electrode, reflecting the fall-off of the current as a function of distance from the electrode center.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Electrode.get_height" title="pulse2percept.electrode2currentmap.Electrode.get_height"><code class="xref py py-obj docutils literal"><span class="pre">get_height</span></code></a>()</td>
+<td>Returns the electrode-retina distance</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Electrode.set_height" title="pulse2percept.electrode2currentmap.Electrode.set_height"><code class="xref py py-obj docutils literal"><span class="pre">set_height</span></code></a>(height)</td>
+<td>Sets the electrode-to-retina distance</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Electrode.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>etype</em>, <em>radius</em>, <em>x_center</em>, <em>y_center</em>, <em>height</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Electrode.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Electrode.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an electrode on the retina</p>
+<p>This function creates a disk electrode of type <cite>etype</cite> and places it
+on the retina at location (<cite>xs</cite>, <cite>ys</cite>) in microns. The electrode has
+radius <cite>radius</cite> (microns) and sits a distance <cite>height</cite> away from the
+retinal surface.
+The coordinate system is anchored around the fovea at (0, 0).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>etype</strong> : str</p>
+<blockquote>
+<div><p>Electrode type, {&#8216;epiretinal&#8217;, &#8216;subretinal&#8217;}</p>
+</div></blockquote>
+<p><strong>radius</strong> : float</p>
+<blockquote>
+<div><p>The radius of the electrode (in microns).</p>
+</div></blockquote>
+<p><strong>x_center</strong> : float</p>
+<blockquote>
+<div><p>The x coordinate of the electrode center (in microns) from the
+fovea.</p>
+</div></blockquote>
+<p><strong>y_center</strong> : float</p>
+<blockquote>
+<div><p>The y location of the electrode (in microns) from the fovea</p>
+</div></blockquote>
+<p><strong>height</strong> : float</p>
+<blockquote>
+<div><p>The height of the electrode from the retinal surface:</p>
+<ul class="simple">
+<li>epiretinal array: distance to the ganglion layer</li>
+<li>subretinal array: distance to the bipolar layer</li>
+</ul>
+</div></blockquote>
+<p><strong>name</strong> : string</p>
+<blockquote class="last">
+<div><p>Electrode name</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Electrode.current_spread">
+<code class="descname">current_spread</code><span class="sig-paren">(</span><em>xg</em>, <em>yg</em>, <em>layer</em>, <em>alpha=14000</em>, <em>n=1.69</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Electrode.current_spread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Electrode.current_spread" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current spread due to a current pulse through an electrode,
+reflecting the fall-off of the current as a function of distance from
+the electrode center. This can be calculated for any layer in the
+retina.
+Based on equation 2 in Nanduri et al [1].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xg</strong> : array</p>
+<blockquote>
+<div><p>x-coordinates of the retinal grid</p>
+</div></blockquote>
+<p><strong>yg</strong> : array</p>
+<blockquote>
+<div><p>y-coordinates of the retinal grid</p>
+</div></blockquote>
+<p><strong>layer: str</strong></p>
+<blockquote>
+<div><p>Layer for which to calculate the current spread:</p>
+<ul class="simple">
+<li>&#8216;NFL&#8217;: nerve fiber layer, ganglion axons</li>
+<li>&#8216;INL&#8217;: inner nuclear layer, containing the bipolars</li>
+</ul>
+</div></blockquote>
+<p><strong>alpha</strong> : float</p>
+<blockquote>
+<div><p>A constant to do with the spatial fall-off.</p>
+</div></blockquote>
+<p><strong>n</strong> : float</p>
+<blockquote class="last">
+<div><p>A constant to do with the spatial fall-off (Default: 1.69, based
+on Ahuja et al. [2]  An In Vitro Model of a Retinal Prosthesis.
+Ashish K. Ahuja, Matthew R. Behrend, Masako Kuroda, Mark S.
+Humayun, and James D. Weiland (2008). IEEE Trans Biomed Eng 55.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Electrode.get_height">
+<code class="descname">get_height</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Electrode.get_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Electrode.get_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the electrode-retina distance</p>
+<p>For epiretinal electrodes, this returns the distance to the ganglion
+cell layer.
+For subretinal electrodes, this returns the distance to the bipolar
+layer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pulse2percept.electrode2currentmap.Electrode.height">
+<code class="descname">height</code><a class="headerlink" href="#pulse2percept.electrode2currentmap.Electrode.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the electrode-retina distance</p>
+<p>For epiretinal electrodes, this returns the distance to the ganglion
+cell layer.
+For subretinal electrodes, this returns the distance to the bipolar
+layer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Electrode.set_height">
+<code class="descname">set_height</code><span class="sig-paren">(</span><em>height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Electrode.set_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Electrode.set_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the electrode-to-retina distance</p>
+<p>This function sets the electrode-to-retina distance according to
+<cite>height</cite>. For an epiretinal device, we calculate the distance to
+the ganglion cell layer (layer thickness depends on retinal location).
+For a subretinal device, we calculate the distance to the bipolar
+layer (layer thickness again depends on retinal location).</p>
+<p>Estimates of layer thickness based on:
+LoDuca et al. Am J. Ophthalmology 2011
+Thickness Mapping of Retinal Layers by Spectral Domain Optical
+Coherence Tomography
+Note that this is for normal retinal, so may overestimate thickness.
+Thickness from their paper (averaged across quadrants):</p>
+<blockquote>
+<div><blockquote>
+<div><p>0-600 um radius (from fovea):</p>
+<ul class="simple">
+<li>Layer 1. (Nerve fiber layer) = 4</li>
+<li>Layer 2. (Ganglion cell bodies + inner plexiform) = 56</li>
+<li>Layer 3. (Bipolar bodies, inner nuclear layer) = 23</li>
+</ul>
+</div></blockquote>
+<p>600-1550 um radius:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Layer 1. 34</li>
+<li>Layer 2. 87</li>
+<li>Layer 3. 37.5</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>1550-3000 um radius:</dt>
+<dd><ul class="first last simple">
+<li>Layer 1. 45.5</li>
+<li>Layer 2. 58.2</li>
+<li>Layer 3. 30.75</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p>We place our ganglion axon surface on the inner side of the nerve fiber
+layer.
+We place our bipolar surface 1/2 way through the inner nuclear layer.
+So for an epiretinal array the bipolar layer is L1 + L2 + 0.5 * L3.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="electrodearray">
+<h2><a class="reference internal" href="#pulse2percept.electrode2currentmap.ElectrodeArray" title="pulse2percept.electrode2currentmap.ElectrodeArray"><code class="xref py py-class docutils literal"><span class="pre">ElectrodeArray</span></code></a><a class="headerlink" href="#electrodearray" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.electrode2currentmap.ElectrodeArray">
+<em class="property">class </em><code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">ElectrodeArray</code><span class="sig-paren">(</span><em>etype</em>, <em>radii</em>, <em>xs</em>, <em>ys</em>, <em>hs</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ElectrodeArray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ElectrodeArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.ElectrodeArray.get_index" title="pulse2percept.electrode2currentmap.ElectrodeArray.get_index"><code class="xref py py-obj docutils literal"><span class="pre">get_index</span></code></a>(name)</td>
+<td>Returns the index of an electrode called <cite>name</cite></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.ElectrodeArray.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>etype</em>, <em>radii</em>, <em>xs</em>, <em>ys</em>, <em>hs</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ElectrodeArray.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ElectrodeArray.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an ElectrodeArray on the retina</p>
+<p>This function creates an electrode array of type <cite>etype</cite> and places it
+on the retina. Lists should specify, for each electrode, its size
+(<cite>radii</cite>), location on the retina (<cite>xs</cite> and <cite>ys</cite>), distance to the
+retina (height, <cite>hs</cite>), and a string identifier (<cite>names</cite>, optional).</p>
+<p>Array location should be given in microns, where the fovea is located
+at (0, 0).</p>
+<p>Single electrodes in the array can be addressed by index (integer)
+or name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>etype</strong> : string</p>
+<blockquote>
+<div><p>Electrode type, {&#8216;epiretinal&#8217;, &#8216;subretinal&#8217;}</p>
+</div></blockquote>
+<p><strong>radii</strong> : array_like</p>
+<blockquote>
+<div><p>List of electrode radii.</p>
+</div></blockquote>
+<p><strong>xs</strong> : array_like</p>
+<blockquote>
+<div><p>List of x-coordinates for the center of the electrodes (microns).</p>
+</div></blockquote>
+<p><strong>ys</strong> : array_like</p>
+<blockquote>
+<div><p>List of y-coordinates for the center of the electrodes (microns).</p>
+</div></blockquote>
+<p><strong>hs</strong> : array_like</p>
+<blockquote>
+<div><p>List of electrode heights (distance from the retinal surface)</p>
+</div></blockquote>
+<p><strong>names</strong> : array_like, optional</p>
+<blockquote class="last">
+<div><p>List of names (string identifiers) for each eletrode.
+Default: None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>A single epiretinal electrode called &#8216;A1&#8217;, with radius 100um, sitting
+at retinal location (0, 0), 10um away from the retina:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pulse2percept</span> <span class="k">import</span> <span class="n">electrode2currentmap</span> <span class="k">as</span> <span class="n">e2cm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">implant1</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ElectrodeArray</span><span class="p">(</span><span class="s1">&#39;epiretinal&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An array with two electrodes of size 100um, one sitting at
+(-100, -100), the other sitting at (0, 0), with 0 distance from the
+retina, of type &#8216;subretinal&#8217;:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">implant2</span> <span class="o">=</span> <span class="n">e2cm</span><span class="o">.</span><span class="n">ElectrodeArray</span><span class="p">(</span><span class="s1">&#39;subretinal&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                               <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Get access to the electrode with name &#8216;A1&#8217; in the array:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_electrode</span> <span class="o">=</span> <span class="n">implant1</span><span class="p">[</span><span class="s1">&#39;A1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Get access to the second electrode in the array:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_electrode</span> <span class="o">=</span> <span class="n">implant2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.ElectrodeArray.get_index">
+<code class="descname">get_index</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ElectrodeArray.get_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ElectrodeArray.get_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the index of an electrode called <cite>name</cite></p>
+<p>This function searches the electrode array for an electrode with
+string identifier <cite>name</cite>. If found, the index of that electrode is
+returned, else None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>An electrode name (string identifier).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A valid electrode index or None.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="movie2pulsetrain">
+<h2><a class="reference internal" href="#pulse2percept.electrode2currentmap.Movie2Pulsetrain" title="pulse2percept.electrode2currentmap.Movie2Pulsetrain"><code class="xref py py-class docutils literal"><span class="pre">Movie2Pulsetrain</span></code></a><a class="headerlink" href="#movie2pulsetrain" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.electrode2currentmap.Movie2Pulsetrain">
+<em class="property">class </em><code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">Movie2Pulsetrain</code><span class="sig-paren">(</span><em>rflum</em>, <em>tsample</em>, <em>fps=30.0</em>, <em>amplitude_transform='linear'</em>, <em>amp_max=60</em>, <em>freq=20</em>, <em>pulse_dur=0.0005</em>, <em>interphase_dur=0.0005</em>, <em>pulsetype='cathodicfirst'</em>, <em>stimtype='pulsetrain'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Movie2Pulsetrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Movie2Pulsetrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pulse2percept.utils.TimeSeries</span></code></p>
+<p>Is used to create pulse-train stimulus based on luminance over time from
+a movie</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">resample</span></code>(factor)</td>
+<td>Resamples time series data</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Movie2Pulsetrain.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>rflum</em>, <em>tsample</em>, <em>fps=30.0</em>, <em>amplitude_transform='linear'</em>, <em>amp_max=60</em>, <em>freq=20</em>, <em>pulse_dur=0.0005</em>, <em>interphase_dur=0.0005</em>, <em>pulsetype='cathodicfirst'</em>, <em>stimtype='pulsetrain'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Movie2Pulsetrain.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Movie2Pulsetrain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>rflum</strong> : 1D array</p>
+<blockquote>
+<div><p>Values between 0 and 1</p>
+</div></blockquote>
+<p class="last"><strong>tsample</strong> : suggest TemporalModel.tsample</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="psycho2pulsetrain">
+<h2><a class="reference internal" href="#pulse2percept.electrode2currentmap.Psycho2Pulsetrain" title="pulse2percept.electrode2currentmap.Psycho2Pulsetrain"><code class="xref py py-class docutils literal"><span class="pre">Psycho2Pulsetrain</span></code></a><a class="headerlink" href="#psycho2pulsetrain" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.electrode2currentmap.Psycho2Pulsetrain">
+<em class="property">class </em><code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">Psycho2Pulsetrain</code><span class="sig-paren">(</span><em>tsample</em>, <em>freq=20</em>, <em>amp=20</em>, <em>dur=0.5</em>, <em>delay=0</em>, <em>pulse_dur=0.00045</em>, <em>interphase_dur=0.00045</em>, <em>pulsetype='cathodicfirst'</em>, <em>pulseorder='pulsefirst'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Psycho2Pulsetrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Psycho2Pulsetrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pulse2percept.utils.TimeSeries</span></code></p>
+<p>Is used to generate pulse trains to simulate psychophysical experiments.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">resample</span></code>(factor)</td>
+<td>Resamples time series data</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Psycho2Pulsetrain.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>tsample</em>, <em>freq=20</em>, <em>amp=20</em>, <em>dur=0.5</em>, <em>delay=0</em>, <em>pulse_dur=0.00045</em>, <em>interphase_dur=0.00045</em>, <em>pulsetype='cathodicfirst'</em>, <em>pulseorder='pulsefirst'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Psycho2Pulsetrain.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Psycho2Pulsetrain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>tsample</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>Sampling interval in seconds parameters, use TemporalModel.tsample.</dd>
+</dl>
+<p>optional parameters
+freq : float</p>
+<blockquote>
+<div>Frequency of the pulse envelope in Hz.</div></blockquote>
+<dl class="docutils">
+<dt>dur</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>Stimulus duration in seconds.</dd>
+<dt>pulse_dur</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>Single-pulse duration in seconds.</dd>
+<dt>interphase_duration</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>Single-pulse interphase duration (the time between the positive
+and negative phase) in seconds.</dd>
+<dt>delay</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>Delay until stimulus on-set in seconds.</dd>
+<dt>amp</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd>Max amplitude of the pulse train in micro-amps.</dd>
+<dt>pulsetype</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd>Pulse type {&#8220;cathodicfirst&#8221; | &#8220;anodicfirst&#8221;}, where
+&#8216;cathodicfirst&#8217; has the negative phase first.</dd>
+<dt>pulseorder</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd>Pulse order {&#8220;gapfirst&#8221; | &#8220;pulsefirst&#8221;}, where
+&#8216;pulsefirst&#8217; has the pulse first, followed by the gap.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="retina">
+<h2><a class="reference internal" href="#pulse2percept.electrode2currentmap.Retina" title="pulse2percept.electrode2currentmap.Retina"><code class="xref py py-class docutils literal"><span class="pre">Retina</span></code></a><a class="headerlink" href="#retina" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pulse2percept.electrode2currentmap.Retina">
+<em class="property">class </em><code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">Retina</code><span class="sig-paren">(</span><em>xlo=-1000</em>, <em>xhi=1000</em>, <em>ylo=-1000</em>, <em>yhi=1000</em>, <em>sampling=25</em>, <em>axon_lambda=2.0</em>, <em>rot=0.0</em>, <em>loadpath='../'</em>, <em>save_data=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Retina"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Retina" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Represent the retinal coordinate frame</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Retina.cm2ecm" title="pulse2percept.electrode2currentmap.Retina.cm2ecm"><code class="xref py py-obj docutils literal"><span class="pre">cm2ecm</span></code></a>(cs)</td>
+<td>Converts a current spread map to an &#8216;effective&#8217; current spread map, by passing the map through a mapping of axon streaks.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.electrode2currentmap.Retina.electrode_ecs" title="pulse2percept.electrode2currentmap.Retina.electrode_ecs"><code class="xref py py-obj docutils literal"><span class="pre">electrode_ecs</span></code></a>(electrode_array[,&nbsp;alpha,&nbsp;n,&nbsp;...])</td>
+<td>Gather current spread and effective current spread for each electrode</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Retina.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>xlo=-1000</em>, <em>xhi=1000</em>, <em>ylo=-1000</em>, <em>yhi=1000</em>, <em>sampling=25</em>, <em>axon_lambda=2.0</em>, <em>rot=0.0</em>, <em>loadpath='../'</em>, <em>save_data=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Retina.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Retina.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a retina</p>
+<p>This function generates the coordinate system for the retina
+and an axon map. As this can take a while, the function will
+first look for an already existing file in the directory <cite>loadpath</cite>
+that was automatically created from an earlier call to this function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xlo, xhi</strong> : float</p>
+<blockquote>
+<div><p>Extent of the retinal coverage (microns) in horizontal dimension.
+Default: xlo=-1000, xhi=1000.</p>
+</div></blockquote>
+<p><strong>ylo, yhi</strong> : float</p>
+<blockquote>
+<div><p>Extent of the retinal coverage (microns) in vertical dimension.
+Default: ylo=-1000, ylo=1000.</p>
+</div></blockquote>
+<p><strong>sampling</strong> : float</p>
+<blockquote>
+<div><p>Microns per grid cell. Default: 25 microns.</p>
+</div></blockquote>
+<p><strong>axon_lambda</strong> : float</p>
+<blockquote>
+<div><p>Constant that determines fall-off with axonal distance.
+Default: 2.</p>
+</div></blockquote>
+<p><strong>rot</strong> : float</p>
+<blockquote>
+<div><p>Rotation angle (rad). Default: 0.</p>
+</div></blockquote>
+<p><strong>loadpath</strong> : str</p>
+<blockquote>
+<div><p>Relative path where to look for existing retina file.
+Default: &#8216;../&#8217;</p>
+</div></blockquote>
+<p><strong>save_data</strong> : bool</p>
+<blockquote class="last">
+<div><p>Flag whether to save the data to a new retina file (True) or not
+(False). The file name is automatically generated from all
+specified input arguments.
+Default: True.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Retina.cm2ecm">
+<code class="descname">cm2ecm</code><span class="sig-paren">(</span><em>cs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Retina.cm2ecm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Retina.cm2ecm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a current spread map to an &#8216;effective&#8217; current spread map, by
+passing the map through a mapping of axon streaks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cs</strong> : array</p>
+<blockquote>
+<div><p>The 2D spread map in retinal space</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ecm</strong> : array</p>
+<blockquote class="last">
+<div><p>The effective current spread, a time-series of the same size as the
+current map, where each pixel is the dot product of the pixel
+values in ecm along the pixels in the list in axon_map, weighted
+by the weights axon map.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pulse2percept.electrode2currentmap.Retina.electrode_ecs">
+<code class="descname">electrode_ecs</code><span class="sig-paren">(</span><em>electrode_array</em>, <em>alpha=14000</em>, <em>n=1.69</em>, <em>integrationtype='maxrule'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#Retina.electrode_ecs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.Retina.electrode_ecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gather current spread and effective current spread for each electrode
+within both the bipolar and the ganglion cell layer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>electrode_array</strong> : ElectrodeArray class instance.</p>
+<p><strong>alpha</strong> : float</p>
+<blockquote>
+<div><p>Current spread parameter</p>
+</div></blockquote>
+<p><strong>n</strong> : float</p>
+<blockquote>
+<div><p>Current spread parameter</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ecs</strong> : contains n arrays containing the the effective current</p>
+<blockquote class="last">
+<div><p>spread within various layers
+for each electrode in the array respectively.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pulse2percept.electrode2currentmap.Electrode.current_spread" title="pulse2percept.electrode2currentmap.Electrode.current_spread"><code class="xref py py-obj docutils literal"><span class="pre">Electrode.current_spread</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="deg2micron">
+<h2>deg2micron<a class="headerlink" href="#deg2micron" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.deg2micron">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">deg2micron</code><span class="sig-paren">(</span><em>deg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#deg2micron"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.deg2micron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a distance from degrees to microns</p>
+<p>Based on <a class="reference external" href="http://retina.anatomy.upenn.edu/~rob/lance/units_space.html">http://retina.anatomy.upenn.edu/~rob/lance/units_space.html</a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="ecm">
+<h2>ecm<a class="headerlink" href="#ecm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.ecm">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">ecm</code><span class="sig-paren">(</span><em>ecs_item</em>, <em>ptrain_data</em>, <em>tsample</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#ecm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.ecm" title="Permalink to this definition">¶</a></dt>
+<dd><p>effective current map from the electrodes in one spatial location
+([x, y] index) and the stimuli through these electrodes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ecs_list: nlayer x npixels (over threshold) arrays</strong></p>
+<p><strong>stimuli</strong> : list of TimeSeries objects with the electrode stimulation</p>
+<blockquote>
+<div><p>pulse trains.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A TimeSeries object with the effective current for this stimulus</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="gamma">
+<h2>gamma<a class="headerlink" href="#gamma" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.gamma">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">gamma</code><span class="sig-paren">(</span><em>n</em>, <em>tau</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#gamma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a gamma function from in [0, t]:</p>
+<p>y = (t/theta).^(n-1).*exp(-t/theta)/(theta*factorial(n-1))</p>
+<p>which is the result of an n stage leaky integrator.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="get-pulse">
+<h2>get_pulse<a class="headerlink" href="#get-pulse" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.get_pulse">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">get_pulse</code><span class="sig-paren">(</span><em>pulse_dur</em>, <em>tsample</em>, <em>interphase_dur</em>, <em>pulsetype</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#get_pulse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.get_pulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a single biphasic pulse.</p>
+<p>A single biphasic pulse with duration <cite>pulse_dur</cite> per phase,
+separated by <cite>interphase_dur</cite> is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pulse_dur</strong> : float</p>
+<blockquote>
+<div><p>Duration of single (positive or negative) pulse phase in seconds.</p>
+</div></blockquote>
+<p><strong>tsample</strong> : float</p>
+<blockquote>
+<div><p>Sampling time step in seconds.</p>
+</div></blockquote>
+<p><strong>interphase_dur</strong> : float</p>
+<blockquote>
+<div><p>Duration of inter-phase interval (between positive and negative
+pulse) in seconds.</p>
+</div></blockquote>
+<p><strong>pulsetype</strong> : {&#8216;cathodicfirst&#8217;, &#8216;anodicfirst&#8217;}</p>
+<blockquote class="last">
+<div><p>A cathodic-first pulse has the negative phase first, whereas an
+anodic-first pulse has the positive phase first.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="image2pulsetrain">
+<h2>image2pulsetrain<a class="headerlink" href="#image2pulsetrain" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.image2pulsetrain">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">image2pulsetrain</code><span class="sig-paren">(</span><em>img, implant, coding='amplitude', valrange=[0, 50], max_contrast=True, const_amp=20, const_freq=20, rftype='gaussian', rfsize=None, invert=False, tsample=5e-06, dur=0.5, pulsedur=0.0005, interphasedur=0.0005, pulsetype='cathodicfirst'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#image2pulsetrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.image2pulsetrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an image into a series of pulse trains</p>
+<p>This function creates an input stimulus from an RGB or grayscale image.
+Requires <cite>scikit-image</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>img</strong> : str|array_like</p>
+<blockquote>
+<div><p>An input image, either a valid filename (string) or a numpy array
+(row x col x channels).</p>
+</div></blockquote>
+<p><strong>implant</strong> : ElectrodeArray</p>
+<blockquote>
+<div><p>An ElectrodeArray object that describes the implant.</p>
+</div></blockquote>
+<p><strong>coding</strong> : {&#8216;amplitude&#8217;, &#8216;frequency&#8217;}, optional</p>
+<blockquote>
+<div><p>A string describing the coding scheme:
+- &#8216;amplitude&#8217;: Image intensity is linearly converted to a current</p>
+<blockquote>
+<div><p>amplitude between <cite>valrange[0]</cite> and <cite>valrange[1]</cite>.
+Frequency is held constant at <cite>const_freq</cite>.</p>
+</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>&#8216;frequency&#8217;: Image intensity is linearly converted to a pulse</dt>
+<dd><p class="first last">frequency between <cite>valrange[0]</cite> and <cite>valrange[1]</cite>.
+Amplitude is held constant at <cite>const_amp</cite>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Default: &#8216;amplitude&#8217;</p>
+</div></blockquote>
+<p><strong>valrange</strong> : list, optional</p>
+<blockquote>
+<div><p>Range of stimulation values to be used (If <cite>coding</cite> is &#8216;amplitude&#8217;,
+specifies min and max current; if <cite>coding</cite> is &#8216;frequency&#8217;, specifies
+min and max frequency).
+Default: [0, 50]</p>
+</div></blockquote>
+<p><strong>max_contrast</strong> : bool, optional</p>
+<blockquote>
+<div><p>Flag wether to maximize image contrast (True) or not (False).
+Default: True</p>
+</div></blockquote>
+<p><strong>const_amp</strong> : float, optional</p>
+<blockquote>
+<div><p>Constant amplitude value to be sued during frequency coding (only
+relevant when <cite>coding</cite> is &#8216;frequency&#8217;).
+Default: 20</p>
+</div></blockquote>
+<p><strong>const_freq</strong> : float, optional</p>
+<blockquote>
+<div><p>Constant frequency value to be sued during amplitude coding (only
+relevant when <cite>coding</cite> is &#8216;amplitude&#8217;).
+Default: 20</p>
+</div></blockquote>
+<p><strong>rftype</strong> : {&#8216;square&#8217;, &#8216;gaussian&#8217;}, optional</p>
+<blockquote>
+<div><p>The type of receptive field.
+- &#8216;square&#8217;: A simple square box receptive field with side length</p>
+<blockquote>
+<div><p><cite>size</cite>.</p>
+</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>&#8216;gaussian&#8217;: A Gaussian receptive field where the weight drops off</dt>
+<dd><p class="first last">as a function of distance from the electrode center.
+The standard deviation of the Gaussian is <cite>size</cite>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>rfsize</strong> : float, optional</p>
+<blockquote>
+<div><p>Parameter describing the size of the receptive field. For square
+receptive fields, this corresponds to the side length of the square.
+For Gaussian receptive fields, this corresponds to the standard
+deviation of the Gaussian.
+Default: Twice the <cite>electrode.radius</cite></p>
+</div></blockquote>
+<p><strong>invert</strong> : bool, optional</p>
+<blockquote>
+<div><p>Flag whether to invert the grayscale values of the image (True) or
+not (False).
+Default: False</p>
+</div></blockquote>
+<p><strong>tsample</strong> : float, optional</p>
+<blockquote>
+<div><p>Sampling time step (seconds). Default: 0.005 / 1000 seconds.</p>
+</div></blockquote>
+<p><strong>dur</strong> : float, optional</p>
+<blockquote>
+<div><p>Stimulus duration (seconds). Default: 0.5 seconds.</p>
+</div></blockquote>
+<p><strong>pulsedur</strong> : float, optional</p>
+<blockquote>
+<div><p>Duration of single (positive or negative) pulse phase in seconds.</p>
+</div></blockquote>
+<p><strong>interphasedur</strong> : float, optional</p>
+<blockquote>
+<div><p>Duration of inter-phase interval (between positive and negative
+pulse) in seconds.</p>
+</div></blockquote>
+<p><strong>pulsetype</strong> : {&#8216;cathodicfirst&#8217;, &#8216;anodicfirst&#8217;}, optional</p>
+<blockquote class="last">
+<div><p>A cathodic-first pulse has the negative phase first, whereas an
+anodic-first pulse has the positive phase first.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="micron2deg">
+<h2>micron2deg<a class="headerlink" href="#micron2deg" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.micron2deg">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">micron2deg</code><span class="sig-paren">(</span><em>micron</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#micron2deg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.micron2deg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a distance from microns to degrees</p>
+<p>Based on <a class="reference external" href="http://retina.anatomy.upenn.edu/~rob/lance/units_space.html">http://retina.anatomy.upenn.edu/~rob/lance/units_space.html</a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="receptive-field">
+<h2>receptive_field<a class="headerlink" href="#receptive-field" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.receptive_field">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">receptive_field</code><span class="sig-paren">(</span><em>electrode</em>, <em>xg</em>, <em>yg</em>, <em>rftype='square'</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#receptive_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.receptive_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>An electrode&#8217;s receptive field</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>electrode</strong> : Electrode</p>
+<blockquote>
+<div><p>An Electrode object describing the electrode.</p>
+</div></blockquote>
+<p><strong>xg</strong> : array_like</p>
+<blockquote>
+<div><p>Array of all x coordinates</p>
+</div></blockquote>
+<p><strong>yg</strong> : array_like</p>
+<blockquote>
+<div><p>Array of all y coordinates</p>
+</div></blockquote>
+<p><strong>rftype</strong> : {&#8216;square&#8217;, &#8216;gaussian&#8217;}</p>
+<blockquote>
+<div><p>The type of receptive field.
+- &#8216;square&#8217;: A simple square box receptive field with side length</p>
+<blockquote>
+<div><p><cite>size</cite>.</p>
+</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>&#8216;gaussian&#8217;: A Gaussian receptive field where the weight drops off</dt>
+<dd><p class="first last">as a function of distance from the electrode center.
+The standard deviation of the Gaussian is <cite>size</cite>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>size</strong> : float, optional</p>
+<blockquote class="last">
+<div><p>Parameter describing the size of the receptive field. For square
+receptive fields, this corresponds to the side length of the square.
+For Gaussian receptive fields, this corresponds to the standard
+deviation of the Gaussian.
+Default: Twice the <cite>electrode.radius</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="retinalmovie2electrodtimeseries">
+<h2>retinalmovie2electrodtimeseries<a class="headerlink" href="#retinalmovie2electrodtimeseries" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.electrode2currentmap.retinalmovie2electrodtimeseries">
+<code class="descclassname">pulse2percept.electrode2currentmap.</code><code class="descname">retinalmovie2electrodtimeseries</code><span class="sig-paren">(</span><em>rf</em>, <em>movie</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/electrode2currentmap.html#retinalmovie2electrodtimeseries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.electrode2currentmap.retinalmovie2electrodtimeseries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the luminance over time for each electrodes receptive field.</p>
+<div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 0.1.</span></p>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Michael Beyeler, Ariel Rokem, Geoff Boynton, and Ione Fine, The University of Washington.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

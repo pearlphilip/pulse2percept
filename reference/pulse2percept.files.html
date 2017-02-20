@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>files &mdash; pulse2percept 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pulse2percept 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Reference" href="index.html"/>
+        <link rel="next" title="oyster" href="pulse2percept.oyster.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pulse2percept
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.html"><code class="docutils literal"><span class="pre">pulse2percept</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.effectivecurrent2brightness.html"><code class="docutils literal"><span class="pre">effectivecurrent2brightness</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.electrode2currentmap.html"><code class="docutils literal"><span class="pre">electrode2currentmap</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">files</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#find-files-like">find_files_like</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npy2movie">npy2movie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#savemoviefiles">savemoviefiles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scale">scale</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pulse2percept.oyster.html"><code class="docutils literal"><span class="pre">oyster</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pulse2percept</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">files</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/pulse2percept.files.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pulse2percept.files">
+<span id="files"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">files</span></code><a class="headerlink" href="#module-pulse2percept.files" title="Permalink to this headline">¶</a></h1>
+<p>Creates avi files will work on a 64x Windows as well as a PC provided that the
+ffmpeg folder is included in the right location</p>
+<p>Most uptodate version of ffmpeg can be found here:
+<a class="reference external" href="https://ffmpeg.zeranoe.com/builds/win64/static/">https://ffmpeg.zeranoe.com/builds/win64/static/</a></p>
+<p>Used instructions from here with modifications:
+<a class="reference external" href="http://adaptivesamples.com/how-to-install-ffmpeg-on-windows/">http://adaptivesamples.com/how-to-install-ffmpeg-on-windows/</a></p>
+<p>written Ione Fine 7/2016</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.files.find_files_like" title="pulse2percept.files.find_files_like"><code class="xref py py-obj docutils literal"><span class="pre">find_files_like</span></code></a>(datapath,&nbsp;pattern)</td>
+<td>Finds files in a folder whose name matches a pattern</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.files.npy2movie" title="pulse2percept.files.npy2movie"><code class="xref py py-obj docutils literal"><span class="pre">npy2movie</span></code></a>(filename,&nbsp;movie[,&nbsp;rate])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pulse2percept.files.savemoviefiles" title="pulse2percept.files.savemoviefiles"><code class="xref py py-obj docutils literal"><span class="pre">savemoviefiles</span></code></a>(filestr,&nbsp;data[,&nbsp;path])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pulse2percept.files.scale" title="pulse2percept.files.scale"><code class="xref py py-obj docutils literal"><span class="pre">scale</span></code></a>(inarray[,&nbsp;newmin,&nbsp;newmax])</td>
+<td>Scales an image such that its lowest value attains newmin and it&#8217;s highest value attains newmax.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="find-files-like">
+<h2>find_files_like<a class="headerlink" href="#find-files-like" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.files.find_files_like">
+<code class="descclassname">pulse2percept.files.</code><code class="descname">find_files_like</code><span class="sig-paren">(</span><em>datapath</em>, <em>pattern</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/files.html#find_files_like"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.files.find_files_like" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds files in a folder whose name matches a pattern</p>
+<p>This function looks for files in folder <cite>datapath</cite> that match a regular
+expression <cite>pattern</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>datapath</strong> : str</p>
+<blockquote>
+<div><p>Path to search</p>
+</div></blockquote>
+<p><strong>pattern</strong> : str</p>
+<blockquote class="last">
+<div><p>A valid regular expression pattern</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p># Find all &#8216;.npz&#8217; files in parent dir
+&gt;&gt;&gt; files = find_files_like(&#8216;..&#8217;, &#8216;.*.npz$&#8217;)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="npy2movie">
+<h2>npy2movie<a class="headerlink" href="#npy2movie" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.files.npy2movie">
+<code class="descclassname">pulse2percept.files.</code><code class="descname">npy2movie</code><span class="sig-paren">(</span><em>filename</em>, <em>movie</em>, <em>rate=30</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/files.html#npy2movie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.files.npy2movie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="savemoviefiles">
+<h2>savemoviefiles<a class="headerlink" href="#savemoviefiles" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.files.savemoviefiles">
+<code class="descclassname">pulse2percept.files.</code><code class="descname">savemoviefiles</code><span class="sig-paren">(</span><em>filestr</em>, <em>data</em>, <em>path='savedImages/'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/files.html#savemoviefiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.files.savemoviefiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="scale">
+<h2>scale<a class="headerlink" href="#scale" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pulse2percept.files.scale">
+<code class="descclassname">pulse2percept.files.</code><code class="descname">scale</code><span class="sig-paren">(</span><em>inarray</em>, <em>newmin=0</em>, <em>newmax=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pulse2percept/files.html#scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pulse2percept.files.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales an image such that its lowest value attains newmin and
+it&#8217;s highest value attains newmax.
+written by Ione Fine, based on code from Rick Anthony
+6/5/2015</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pulse2percept.oyster.html" class="btn btn-neutral float-right" title="oyster" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Michael Beyeler, Ariel Rokem, Geoff Boynton, and Ione Fine, The University of Washington.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`electrode2currentmap`
+===========================
+.. automodule:: pulse2percept.electrode2currentmap
+
+.. currentmodule:: pulse2percept.electrode2currentmap
+.. autosummary::
+
+   ArgusI
+   ArgusII
+   Electrode
+   ElectrodeArray
+   Movie2Pulsetrain
+   Psycho2Pulsetrain
+   Retina
+   deg2micron
+   ecm
+   gamma
+   get_pulse
+   image2pulsetrain
+   micron2deg
+   receptive_field
+   retinalmovie2electrodtimeseries
+
+
+.. currentmodule:: pulse2percept.electrode2currentmap
+
+
+:class:`ArgusI`
+~~~~~~~~~~~~~~~
+
+
+.. autoclass:: ArgusI
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`ArgusII`
+~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: ArgusII
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`Electrode`
+~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: Electrode
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`ElectrodeArray`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: ElectrodeArray
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`Movie2Pulsetrain`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: Movie2Pulsetrain
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`Psycho2Pulsetrain`
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: Psycho2Pulsetrain
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`Retina`
+~~~~~~~~~~~~~~~
+
+
+.. autoclass:: Retina
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+deg2micron
+~~~~~~~~~~
+
+.. autofunction:: deg2micron
+
+ecm
+~~~
+
+.. autofunction:: ecm
+
+gamma
+~~~~~
+
+.. autofunction:: gamma
+
+get_pulse
+~~~~~~~~~
+
+.. autofunction:: get_pulse
+
+image2pulsetrain
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: image2pulsetrain
+
+micron2deg
+~~~~~~~~~~
+
+.. autofunction:: micron2deg
+
+receptive_field
+~~~~~~~~~~~~~~~
+
+.. autofunction:: receptive_field
+
+retinalmovie2electrodtimeseries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: retinalmovie2electrodtimeseries
+

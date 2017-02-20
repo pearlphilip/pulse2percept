@@ -1,0 +1,25 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`oyster`
+=============
+.. automodule:: pulse2percept.oyster
+
+.. currentmodule:: pulse2percept.oyster
+.. autosummary::
+
+   jansonius
+   make_axon_map
+
+
+.. currentmodule:: pulse2percept.oyster
+
+jansonius
+~~~~~~~~~
+
+.. autofunction:: jansonius
+
+make_axon_map
+~~~~~~~~~~~~~
+
+.. autofunction:: make_axon_map
+

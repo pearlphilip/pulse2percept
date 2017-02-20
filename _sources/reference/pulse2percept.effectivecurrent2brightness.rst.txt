@@ -1,0 +1,44 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`effectivecurrent2brightness`
+==================================
+.. automodule:: pulse2percept.effectivecurrent2brightness
+
+.. currentmodule:: pulse2percept.effectivecurrent2brightness
+.. autosummary::
+
+   TemporalModel
+   get_brightest_frame
+   parse_pulse_trains
+   pulse2percept
+
+
+.. currentmodule:: pulse2percept.effectivecurrent2brightness
+
+
+:class:`TemporalModel`
+~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: TemporalModel
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+get_brightest_frame
+~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: get_brightest_frame
+
+parse_pulse_trains
+~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: parse_pulse_trains
+
+pulse2percept
+~~~~~~~~~~~~~
+
+.. autofunction:: pulse2percept
+

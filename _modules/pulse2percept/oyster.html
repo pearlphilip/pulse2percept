@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pulse2percept.oyster &mdash; pulse2percept 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pulse2percept 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pulse2percept
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">pulse2percept</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>pulse2percept.oyster</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pulse2percept.oyster</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># contains the functions</span>
+<span class="c1">#   jansonius</span>
+<span class="c1">#   makeAxonMap</span>
+<span class="c1">#   cm2ecm</span>
+<span class="c1">#</span>
+<span class="c1"># Written 1/14/2016 by gmb</span>
+
+
+<div class="viewcode-block" id="jansonius"><a class="viewcode-back" href="../../reference/pulse2percept.oyster.html#pulse2percept.oyster.jansonius">[docs]</a><span class="k">def</span> <span class="nf">jansonius</span><span class="p">(</span><span class="n">nCells</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">nR</span><span class="o">=</span><span class="mi">801</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
+              <span class="n">rot</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bs</span><span class="o">=-</span><span class="mf">1.9</span><span class="p">,</span> <span class="n">bi</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">r0</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+              <span class="n">maxR</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">angRange</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implements the model of retinal axonal pathways by generating a</span>
+<span class="sd">    matrix of (x,y) positions.</span>
+
+<span class="sd">    Assumes that the fovea is at [0, 0]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nCells : int</span>
+<span class="sd">        Number of axons (cells).</span>
+<span class="sd">    nR : int</span>
+<span class="sd">        Number of samples per axon (spatial resolution).</span>
+<span class="sd">    Center: 2 item array</span>
+<span class="sd">        The location of the optic disk in dva.</span>
+
+<span class="sd">    See:</span>
+
+<span class="sd">    Jansonius et al., 2009, A mathematical description of nerve fiber bundle</span>
+<span class="sd">    trajectories and their variability in the human retina, Vision Research</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Default parameters:</span>
+    <span class="c1">#</span>
+    <span class="c1"># r0 = 4;             %Minumum radius (optic disc size)</span>
+    <span class="c1">#</span>
+    <span class="c1"># center = [15,2];    %p.center of optic disc</span>
+    <span class="c1">#</span>
+    <span class="c1"># rot = 0*pi/180;    %Angle of rotation (clockwise)</span>
+    <span class="c1"># scale = 1;             %Scale factor</span>
+    <span class="c1">#</span>
+    <span class="c1"># bs = -1.9;          %superior &#39;b&#39; parameter constant</span>
+    <span class="c1"># bi = .5;            %inferior &#39;c&#39; parameter constant</span>
+    <span class="c1"># angRange = 60</span>
+
+    <span class="n">ang0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">angRange</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">nCells</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+                      <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="n">angRange</span><span class="p">,</span> <span class="n">nCells</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="n">maxR</span><span class="p">,</span> <span class="n">nR</span><span class="p">)</span>
+    <span class="c1"># generate angle and radius matrices from vectors with meshgrid</span>
+    <span class="n">ang0mat</span><span class="p">,</span> <span class="n">rmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">ang0</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+
+    <span class="n">nR</span> <span class="o">=</span> <span class="n">ang0mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nCells</span> <span class="o">=</span> <span class="n">ang0mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># index into superior (upper) axons</span>
+    <span class="n">sup</span> <span class="o">=</span> <span class="n">ang0mat</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1"># Set up &#39;b&#39; parameter:</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">nR</span><span class="p">,</span> <span class="n">nCells</span><span class="p">])</span>
+
+    <span class="n">b</span><span class="p">[</span><span class="n">sup</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+        <span class="n">bs</span> <span class="o">+</span> <span class="mf">3.9</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">ang0mat</span><span class="p">[</span><span class="n">sup</span><span class="p">]</span> <span class="o">-</span> <span class="mi">121</span><span class="p">)</span> <span class="o">/</span> <span class="mi">14</span><span class="p">))</span>  <span class="c1"># equation 5</span>
+    <span class="c1"># equation 6</span>
+    <span class="n">b</span><span class="p">[</span><span class="o">~</span><span class="n">sup</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">bi</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">ang0mat</span><span class="p">[</span><span class="o">~</span><span class="n">sup</span><span class="p">]</span> <span class="o">-</span> <span class="mi">90</span><span class="p">)</span> <span class="o">/</span> <span class="mi">25</span><span class="p">))</span>
+
+    <span class="c1"># Set up &#39;c&#39; parameter:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">nR</span><span class="p">,</span> <span class="n">nCells</span><span class="p">])</span>
+
+    <span class="c1"># equation 3 (fixed typo)</span>
+    <span class="n">c</span><span class="p">[</span><span class="n">sup</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.9</span> <span class="o">+</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">((</span><span class="n">ang0mat</span><span class="p">[</span><span class="n">sup</span><span class="p">]</span> <span class="o">-</span> <span class="mi">121</span><span class="p">)</span> <span class="o">/</span> <span class="mi">14</span><span class="p">)</span>
+    <span class="n">c</span><span class="p">[</span><span class="o">~</span><span class="n">sup</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">((</span><span class="o">-</span><span class="n">ang0mat</span><span class="p">[</span><span class="o">~</span><span class="n">sup</span><span class="p">]</span> <span class="o">-</span> <span class="mi">90</span><span class="p">)</span> <span class="o">/</span> <span class="mi">25</span><span class="p">)</span>   <span class="c1"># equation 4</span>
+
+    <span class="c1"># %Here&#39;s the main function: spirals as a function of r (equation 1)</span>
+    <span class="n">ang</span> <span class="o">=</span> <span class="n">ang0mat</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">rmat</span> <span class="o">-</span> <span class="n">r0</span><span class="p">)</span><span class="o">**</span><span class="n">c</span>
+
+    <span class="c1"># Transform to x-y coordinates</span>
+    <span class="n">xprime</span> <span class="o">=</span> <span class="n">rmat</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ang</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+    <span class="n">yprime</span> <span class="o">=</span> <span class="n">rmat</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ang</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+
+    <span class="c1"># Find where the fibers cross the horizontal meridian</span>
+    <span class="n">cross</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">nR</span><span class="p">,</span> <span class="n">nCells</span><span class="p">])</span>
+    <span class="n">cross</span><span class="p">[</span><span class="n">sup</span><span class="p">]</span> <span class="o">=</span> <span class="n">yprime</span><span class="p">[</span><span class="n">sup</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span>
+    <span class="n">cross</span><span class="p">[</span><span class="o">~</span><span class="n">sup</span><span class="p">]</span> <span class="o">=</span> <span class="n">yprime</span><span class="p">[</span><span class="o">~</span><span class="n">sup</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1"># Set Nans to axon paths after crossing horizontal meridian</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">cross</span><span class="p">))</span>
+
+    <span class="n">currCol</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>  <span class="c1"># loop through axons</span>
+        <span class="k">if</span> <span class="n">currCol</span> <span class="o">!=</span> <span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">yprime</span><span class="p">[</span><span class="nb">id</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]:,</span> <span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
+            <span class="n">currCol</span> <span class="o">=</span> <span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># Bend the image according to (the inverse) of Appendix A</span>
+    <span class="n">xmodel</span> <span class="o">=</span> <span class="n">xprime</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ymodel</span> <span class="o">=</span> <span class="n">yprime</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">xprime</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ymodel</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">yprime</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmodel</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">/</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c1">#  rotate about the optic disc and scale</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmodel</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span> <span class="o">*</span>
+                 <span class="p">(</span><span class="n">ymodel</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmodel</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span> <span class="o">*</span>
+                 <span class="p">(</span><span class="n">ymodel</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="make_axon_map"><a class="viewcode-back" href="../../reference/pulse2percept.oyster.html#pulse2percept.oyster.make_axon_map">[docs]</a><span class="k">def</span> <span class="nf">make_axon_map</span><span class="p">(</span><span class="n">xg</span><span class="p">,</span> <span class="n">yg</span><span class="p">,</span> <span class="n">jan_x</span><span class="p">,</span> <span class="n">jan_y</span><span class="p">,</span> <span class="n">axon_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_weight</span><span class="o">=.</span><span class="mi">001</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retinal axon map</span>
+
+<span class="sd">    Generates a mapping of how each pixel in the retina space is affected</span>
+<span class="sd">    by stimulation of underlying ganglion cell axons.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xg, yg : array</span>
+<span class="sd">        meshgrid of pixel locations in units of visual angle sp</span>
+<span class="sd">    axon_lambda : float</span>
+<span class="sd">        space constant for how effective stimulation (or &#39;weight&#39;) falls off</span>
+<span class="sd">        with distance from the pixel back along the axon toward the optic disc</span>
+<span class="sd">        (default 1 degree)</span>
+<span class="sd">    min_weight : float</span>
+<span class="sd">        minimum weight falloff.  default .001</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    axon_id : list</span>
+<span class="sd">        a list, for every pixel, of the index into the pixel in xg,yg space,</span>
+<span class="sd">        along the underlying axonal pathway.</span>
+<span class="sd">    axon_weight : list</span>
+<span class="sd">        a list, for every pixel, of the axon weight into the pixel in xg,yg</span>
+<span class="sd">        space</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># initialize lists</span>
+    <span class="n">axon_xg</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">axon_yg</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">axon_dist</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">axon_weight</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">axon_id</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="c1"># loop through pixels as indexed into a single dimension</span>
+    <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xg</span><span class="o">.</span><span class="n">flat</span><span class="p">)):</span>
+        <span class="c1"># find the nearest axon to this pixel</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">jan_x</span> <span class="o">-</span> <span class="n">xg</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">jan_y</span> <span class="o">-</span> <span class="n">yg</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">cur_ax_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanargmin</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>  <span class="c1"># index into the current axon</span>
+        <span class="p">[</span><span class="n">axPosId0</span><span class="p">,</span> <span class="n">axNum</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">cur_ax_id</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="n">dist</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">cur_xg</span> <span class="o">=</span> <span class="n">xg</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="n">cur_yg</span> <span class="o">=</span> <span class="n">yg</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+
+        <span class="c1"># add first values to the list for this pixel</span>
+        <span class="n">axon_dist</span> <span class="o">=</span> <span class="n">axon_dist</span> <span class="o">+</span> <span class="p">([</span><span class="mi">0</span><span class="p">],)</span>
+        <span class="n">axon_weight</span> <span class="o">=</span> <span class="n">axon_weight</span> <span class="o">+</span> <span class="p">([</span><span class="mi">1</span><span class="p">],)</span>
+        <span class="n">axon_xg</span> <span class="o">=</span> <span class="n">axon_xg</span> <span class="o">+</span> <span class="p">([</span><span class="n">cur_xg</span><span class="p">],)</span>
+        <span class="n">axon_yg</span> <span class="o">=</span> <span class="n">axon_yg</span> <span class="o">+</span> <span class="p">([</span><span class="n">cur_yg</span><span class="p">],)</span>
+        <span class="n">axon_id</span> <span class="o">=</span> <span class="n">axon_id</span> <span class="o">+</span> <span class="p">([</span><span class="nb">id</span><span class="p">],)</span>
+
+        <span class="c1"># now loop back along this nearest axon toward the optic disc</span>
+        <span class="k">for</span> <span class="n">axPosId</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">axPosId0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># increment the distance from the starting point</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">jan_x</span><span class="p">[</span><span class="n">axPosId</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axNum</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_x</span><span class="p">[</span><span class="n">axPosId</span><span class="p">,</span> <span class="n">axNum</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">ay</span> <span class="o">=</span> <span class="p">(</span><span class="n">jan_y</span><span class="p">[</span><span class="n">axPosId</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axNum</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_y</span><span class="p">[</span><span class="n">axPosId</span><span class="p">,</span> <span class="n">axNum</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">dist</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ax</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ay</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+            <span class="c1"># weight falls off exponentially as distance from axon cell body</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dist</span> <span class="o">/</span> <span class="n">axon_lambda</span><span class="p">)</span>
+
+            <span class="c1"># find the nearest pixel to the current position along the axon</span>
+            <span class="n">nearest_xg_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xg</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">jan_x</span><span class="p">[</span><span class="n">axPosId</span><span class="p">,</span> <span class="n">axNum</span><span class="p">])</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+            <span class="n">nearest_yg_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">yg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_y</span><span class="p">[</span><span class="n">axPosId</span><span class="p">,</span> <span class="n">axNum</span><span class="p">])</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+            <span class="n">nearest_xg</span> <span class="o">=</span> <span class="n">xg</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">nearest_xg_id</span><span class="p">]</span>
+            <span class="n">nearest_yg</span> <span class="o">=</span> <span class="n">yg</span><span class="p">[</span><span class="n">nearest_yg_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># if the position along the axon has moved to a new pixel, and the</span>
+            <span class="c1"># weight isn&#39;t too small...</span>
+            <span class="k">if</span> <span class="n">weight</span> <span class="o">&gt;</span> <span class="n">min_weight</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nearest_xg</span> <span class="o">!=</span> <span class="n">cur_xg</span> <span class="ow">or</span> <span class="n">nearest_yg</span> <span class="o">!=</span> <span class="n">cur_yg</span><span class="p">:</span>
+                    <span class="c1"># update the current pixel location</span>
+                    <span class="n">cur_xg</span> <span class="o">=</span> <span class="n">nearest_xg</span>
+                    <span class="n">cur_yg</span> <span class="o">=</span> <span class="n">nearest_yg</span>
+
+                    <span class="c1"># append the list</span>
+                    <span class="n">axon_weight</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">weight</span><span class="p">))</span>
+                    <span class="n">axon_id</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel_multi_index</span><span class="p">((</span><span class="n">nearest_yg_id</span><span class="p">,</span>
+                                                             <span class="n">nearest_xg_id</span><span class="p">),</span>
+                                                            <span class="n">xg</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">axon_id</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">axon_weight</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Michael Beyeler, Ariel Rokem, Geoff Boynton, and Ione Fine, The University of Washington.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

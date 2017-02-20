@@ -1,0 +1,12 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+API Reference
+=============
+
+.. toctree::
+
+   pulse2percept.rst
+   pulse2percept.effectivecurrent2brightness.rst
+   pulse2percept.electrode2currentmap.rst
+   pulse2percept.files.rst
+   pulse2percept.oyster.rst
